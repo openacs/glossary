@@ -221,6 +221,7 @@ select acs_privilege__create_privilege('glossary_term_delete_illustration', null
 
 select acs_privilege__create_privilege('glossary_admin', null, null);
 
+select acs_privilege__add_child('admin','glossary_admin');
 select acs_privilege__add_child('glossary_admin','glossary_create');
 select acs_privilege__add_child('glossary_admin','glossary_modify');
 select acs_privilege__add_child('glossary_admin','glossary_delete');

@@ -240,6 +240,7 @@ show errors
 begin
   acs_privilege.create_privilege('glossary_admin');
 
+  acs_privilege.add_child('admin','glossary_admin');
   acs_privilege.add_child('glossary_admin','glossary_create');
   acs_privilege.add_child('glossary_admin','glossary_modify');
   acs_privilege.add_child('glossary_admin','glossary_delete');
