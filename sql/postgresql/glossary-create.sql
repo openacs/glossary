@@ -35,132 +35,128 @@ comment on column glossaries.owner_id is 'the creation_user may not always be th
 comment on column glossaries.package_id is 'we use this rather than always counting on context_id to give us the right permissions, because package instances  may share grant the same permission to the same party, but they are not the same set of glossaries ';
 
 -- create a glossary object type
-declare
- attr_id acs_attributes.attribute_id%TYPE;
-begin
-  content_type.create_type (
-    supertype => 'content_revision',
-    content_type => 'glossary',
-    pretty_name => 'Glossary',
-    pretty_plural => 'Glossaries',
-    table_name => 'glossaries',
-    id_column => 'glossary_id'
+select content_type__create_type (
+    /* content_type => */  'glossary',
+    /* supertype => */     'content_revision',
+    /* pretty_name => */   'Glossary',
+    /* pretty_plural => */ 'Glossaries',
+    /* table_name => */    'glossaries',
+    /* id_column => */     'glossary_id',
+    /* name_method => */   NULL
   );
 
-  attr_id := content_type.create_attribute (
-    content_type => 'glossary',
-    attribute_name => 'owner_id',
-    pretty_name => 'Owner_id',
-    datatype => 'number'
+select content_type__create_attribute (
+    /* content_type => */   'glossary',
+    /* attribute_name => */ 'owner_id',
+    /* datatype => */       'number',
+    /* pretty_name => */    'Owner_id',
+    /* pretty_plural => */  NULL,
+    /* sort_order => */     NULL,
+    /* default_value => */  NULL,
+    /* column_spec => */    NULL
     );
 
-  attr_id := content_type.create_attribute (
-    content_type => 'glossary',
-    attribute_name => 'package_id',
-    pretty_name => 'Package_id',
-    datatype => 'number'
+select content_type__create_attribute (
+    /* content_type => */   'glossary',
+    /* attribute_name => */ 'package_id',
+    /* datatype => */       'number',
+    /* pretty_name => */    'Package_id',
+    /* pretty_plural => */  NULL,
+    /* sort_order => */     NULL,
+    /* default_value => */  NULL,
+    /* column_spec => */    NULL
     );
 
-  attr_id := content_type.create_attribute (
-    content_type => 'glossary',
-    attribute_name => 'workflow_key',
-    pretty_name => 'Workflow Process',
-    datatype => 'string'
+select content_type__create_attribute (
+    /* content_type => */   'glossary',
+    /* attribute_name => */ 'workflow_key',
+    /* datatype => */       'string',
+    /* pretty_name => */    'Workflow Process',
+    /* pretty_plural => */  NULL,
+    /* sort_order => */     NULL,
+    /* default_value => */  NULL,
+    /* column_spec => */    NULL
     );
   
-commit;
-end;
-/
-show errors
 
 -- should add locale and nls_language for full internationalization?
 -- this is dependent on the standards for ACS globilization
 -- will do the right thing later
+create function glossary__new(integer, varchar, varchar, varchar, integer,
+                              integer, varchar, integer, boolean) returns integer as '
+declare
+   p_owner_id      alias for $1;
+   p_name          alias for $2;
+   p_title         alias for $3;
+   p_description   alias for $4;
+   p_package_id    alias for $5;
+   p_creation_user alias for $6;
+   p_creation_ip   alias for $7;
+   p_context_id    alias for $8;
+   p_is_live       alias for $9;
+   v_item_id integer;	
+   v_revision_id integer;
+begin
 
-create or replace package glossary
-as
-  function new(
-   owner_id  	 in parties.party_id%TYPE,
-   name		 in cr_items.name%TYPE,
-   title         in cr_revisions.title%TYPE,
-   description   in cr_revisions.description%TYPE default null,
-   package_id    in apm_packages.package_id%TYPE,
-   creation_date in acs_objects.creation_date%TYPE default sysdate,
-   creation_user in acs_objects.creation_user%TYPE default null,
-   creation_ip	 in acs_objects.creation_ip%TYPE default null,
-   context_id    in acs_objects.context_id%TYPE default null,
-   is_live       in char default 'f'
-  ) return cr_items.item_id%TYPE;
-
-end;
-/
-show errors
-
-create or replace package body glossary
-as
-  function new(
-   owner_id  	 in parties.party_id%TYPE,
-   name		 in cr_items.name%TYPE,
-   title         in cr_revisions.title%TYPE,
-   description   in cr_revisions.description%TYPE default null,
-   package_id    in apm_packages.package_id%TYPE,
-   creation_date in acs_objects.creation_date%TYPE default sysdate,
-   creation_user in acs_objects.creation_user%TYPE default null,
-   creation_ip	 in acs_objects.creation_ip%TYPE default null,
-   context_id    in acs_objects.context_id%TYPE default null,
-   is_live       in char default 'f'
-  ) return cr_items.item_id%TYPE is
-    v_item_id integer;	
-    v_revision_id integer;
-  begin
-
-  v_item_id := content_item.new( 
-   name => name, 
-   content_type => 'glossary',
-   creation_date => creation_date,
-   creation_user => creation_user,
-   creation_ip => creation_ip,
-   context_id => context_id
+  v_item_id := content_item__new( 
+   /* name => */          p_name, 
+   /* parent_id */        NULL,
+   /* item_id */          NULL,
+   /* locale */           NULL,
+   /* creation_date => */ current_timestamp,
+   /* creation_user => */ p_creation_user,
+   /* context_id => */    p_context_id,
+   /* creation_ip => */   p_creation_ip,
+   /* item_subtype */     ''content_item'',
+   /* content_type => */  ''glossary'',
+   /* title => */         NULL,
+   /* description => */   NULL,
+   /* mime_type => */     NULL,
+   /* nls_language => */  NULL,
+   /* text => */          NULL,
+   /* storage_type */     ''text''
   );  
 
-  v_revision_id := content_revision.new(
-   item_id => v_item_id,
-   title => title,
-   description => description,
-   creation_date => creation_date,
-   creation_user => creation_user,
-   creation_ip => creation_ip
+  v_revision_id := content_revision__new(
+   /* title => */         p_title,
+   /* description => */   p_description,
+   /* publish_date => */  current_timestamp,
+   /* mime_type => */     ''text/plain'',
+   /* nls_language => */  NULL,
+   /* data => */          NULL,
+   /* item_id => */       v_item_id,
+   /* revision_id => */   NULL,
+   /* creation_date => */ current_timestamp,
+   /* creation_user => */ p_creation_user,
+   /* creation_ip => */   p_creation_ip
   );
 
   insert into glossaries (
   glossary_id, owner_id, package_id
   ) values (
-  v_revision_id, owner_id, package_id
+  v_revision_id, p_owner_id, p_package_id
   );
 
-  if is_live = 't' then
+  if p_is_live then
    update cr_revisions
-   set publish_date = sysdate
+   set publish_date = current_timestamp
    where revision_id = v_revision_id;
 
    update cr_items 
-   set publish_status = 'live',
+   set publish_status = ''live'',
    live_revision = v_revision_id
    where item_id =v_item_id;
   end if;
 
   return v_item_id;
 
-  end new;
-
-end glossary;
-/
-show errors
+end;' language 'plpgsql';
 
 -- terms
 
 create table glossary_terms (
-  term_id    		constraint glossary_terms_term_id_fk
+  term_id    		integer
+                        constraint glossary_terms_term_id_fk
       			references cr_revisions on delete cascade
     			constraint glossary_terms_pk
       			primary key
@@ -169,40 +165,30 @@ create table glossary_terms (
 comment on table glossary_terms is 'most of the info for terms is stored in the content repository (cr_items and cr_revisions), terms essentially are composed of the two componants; the term and its definition in addition, an image can be associated with a term as illustration, terms inherit security settings via context_id which should point at the parent glossary), we use the cr_child_rels to map terms to glossaries for general parentage
 ';
 
-begin
  -- create the content type
-  content_type.create_type(
-   supertype     => 'content_revision',
-   content_type  => 'glossary_term',
-   pretty_name   => 'Term',
-   pretty_plural => 'Terms',
-   table_name    => 'glossary_terms',
-   id_column     => 'term_id'
+select content_type__create_type(
+    /* content_type => */  'glossary_term',
+    /* supertype => */     'content_revision',
+    /* pretty_name => */   'Term',
+    /* pretty_plural => */ 'Terms',
+    /* table_name => */    'glossary_terms',
+    /* id_column => */     'term_id',
+    /* name_method => */   NULL
   );
- 
-  commit;
-
-end;
-/
-show errors
 
 -- establish the parent child relationship between the glossary content type and the glossary term content type
 
-begin
-  content_type.register_child_type('glossary','glossary_term','parent glossary');
-end;
-/
-show errors
+select content_type__register_child_type('glossary','glossary_term','parent glossary', 0, NULL);
 
-create or replace view glossary_terms_latest as
+create view glossary_terms_latest as
 	select i.item_id, i.live_revision, r.revision_id as latest_revision,
 	title as term, name, content as definition, publish_status, r.mime_type
 	from cr_items i, cr_revisions r
 	where i.content_type = 'glossary_term'
 	and r.item_id = i.item_id
-        and r.revision_id = content_item.get_latest_revision(i.item_id);
+        and r.revision_id = content_item__get_latest_revision(i.item_id);
 
-create or replace view glossary_terms_live_definition as
+create view glossary_terms_live_definition as
 	select i.item_id, r.revision_id,
 	title as term, name, content as definition, r.mime_type
 	from cr_items i, cr_revisions r
@@ -213,11 +199,7 @@ create or replace view glossary_terms_live_definition as
 
 -- an "illustration" is a mapping of an image content_type to a glossary_term parent content_type
 
-begin
-  content_type.register_child_type('glossary_term','image','illustration');
-end;
-/
-show errors
+select content_type__register_child_type('glossary_term','image','illustration', 0, NULL);
 
 -- permissions for glossaries and terms and illustrations
 
@@ -225,45 +207,33 @@ show errors
 -- the term object will then point its context_id at the glossary object
 -- to inherit the permissions scheme
 -- note that we grant the generic read privilege to users as well
-begin
-  acs_privilege.create_privilege('glossary_create');
-  acs_privilege.create_privilege('glossary_modify');
-  acs_privilege.create_privilege('glossary_delete');
-  acs_privilege.create_privilege('glossary_term_comment_on');
-  acs_privilege.create_privilege('glossary_term_comment_read');
-  acs_privilege.create_privilege('glossary_term_create');
-  acs_privilege.create_privilege('glossary_term_modify');
-  acs_privilege.create_privilege('glossary_term_delete');
-  acs_privilege.create_privilege('glossary_term_add_illustration');
-  acs_privilege.create_privilege('glossary_term_modify_illustration');
-  acs_privilege.create_privilege('glossary_term_delete_illustration');
-end;
-/
-show errors
+select acs_privilege__create_privilege('glossary_create', null, null);
+select acs_privilege__create_privilege('glossary_modify', null, null);
+select acs_privilege__create_privilege('glossary_delete', null, null);
+select acs_privilege__create_privilege('glossary_term_comment_on', null, null);
+select acs_privilege__create_privilege('glossary_term_comment_read', null, null);
+select acs_privilege__create_privilege('glossary_term_create', null, null);
+select acs_privilege__create_privilege('glossary_term_modify', null, null);
+select acs_privilege__create_privilege('glossary_term_delete', null, null);
+select acs_privilege__create_privilege('glossary_term_add_illustration', null, null);
+select acs_privilege__create_privilege('glossary_term_modify_illustration', null, null);
+select acs_privilege__create_privilege('glossary_term_delete_illustration', null, null);
 
-begin
-  acs_privilege.create_privilege('glossary_admin');
+select acs_privilege__create_privilege('glossary_admin', null, null);
 
-  acs_privilege.add_child('glossary_admin','glossary_create');
-  acs_privilege.add_child('glossary_admin','glossary_modify');
-  acs_privilege.add_child('glossary_admin','glossary_delete');
-  acs_privilege.add_child('glossary_admin','glossary_term_comment_read');
-  acs_privilege.add_child('glossary_admin','glossary_term_comment_on');
-  acs_privilege.add_child('glossary_admin','glossary_term_create');
-  acs_privilege.add_child('glossary_admin','glossary_term_modify');
-  acs_privilege.add_child('glossary_admin','glossary_term_delete');
-  acs_privilege.add_child('glossary_admin','glossary_term_add_illustration');
-  acs_privilege.add_child('glossary_admin','glossary_term_modify_illustration');
-  acs_privilege.add_child('glossary_admin','glossary_term_delete_illustration');
-end;
-/
-show errors
+select acs_privilege__add_child('glossary_admin','glossary_create');
+select acs_privilege__add_child('glossary_admin','glossary_modify');
+select acs_privilege__add_child('glossary_admin','glossary_delete');
+select acs_privilege__add_child('glossary_admin','glossary_term_comment_read');
+select acs_privilege__add_child('glossary_admin','glossary_term_comment_on');
+select acs_privilege__add_child('glossary_admin','glossary_term_create');
+select acs_privilege__add_child('glossary_admin','glossary_term_modify');
+select acs_privilege__add_child('glossary_admin','glossary_term_delete');
+select acs_privilege__add_child('glossary_admin','glossary_term_add_illustration');
+select acs_privilege__add_child('glossary_admin','glossary_term_modify_illustration');
+select acs_privilege__add_child('glossary_admin','glossary_term_delete_illustration');
 
-begin
-  content_folder.register_content_type( -100, 'glossary', 't');
-  content_folder.register_content_type( -100, 'glossary_term', 't');
-end;
-/
-show errors
+select content_folder__register_content_type( -100, 'glossary', 't');
+select content_folder__register_content_type( -100, 'glossary_term', 't');
 
-@@ glossary-workflows.sql
+\i glossary-workflows.sql
