@@ -65,65 +65,21 @@
       </querytext>
 </fullquery>
 
- 
-<fullquery name="term_new_content_item">      
+<fullquery name="new_glossary_term">
       <querytext>
-      
-		begin
-		:1 := content_item.new (
-		name => :name,
-		content_type => 'glossary_term',
-                context_id => :glossary_item_id,
-                creation_user => :user_id,
-                creation_ip => :peeraddr
-		);
-		end;
-	    
+         begin
+	  :1 := glossary_term.new (
+           term => :term,
+           definition => :definition,
+           mime_type => :mime_type,
+           package_id => :package_id,
+           creation_user => :user_id,
+           creation_ip => :peeraddr,
+           context_id => :glossary_item_id,
+           publish_status => :publish_status
+	  );
+         end;
       </querytext>
 </fullquery>
-
- 
-<fullquery name="term_new_content_revision_1">      
-      <querytext>
-      
-        begin
-          :1 := content_revision.new(
-                  item_id => :new_item_id,
-                  title => :term,
-                  mime_type => :mime_type,
-                  creation_user => :user_id,
-                  creation_ip => :peeraddr
-                );
-        end;
-	    
-      </querytext>
-</fullquery>
-
- 
-<fullquery name="term_definition_update_2">      
-      <querytext>
-      
-		    update cr_revisions
-		    set content = empty_blob()
-		    where revision_id = :new_revision_id
-		    returning content into :1
-		
-      </querytext>
-</fullquery>
-
- 
-<fullquery name="term_new_content_revision_2">      
-      <querytext>
-      
-		begin
-		:1 := acs_object.new(
-		object_type	=> 'cr_item_child_rel',
-		context_id	=> :glossary_item_id
-		);
-		end;
-	    
-      </querytext>
-</fullquery>
-
  
 </queryset>

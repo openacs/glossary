@@ -61,7 +61,6 @@
 	    begin
 	    :1 := glossary.new (
 	    owner_id => :owner_id,
-	    name => :name,
 	    title => :title,
             description => :description,
 	    package_id => :package_id,

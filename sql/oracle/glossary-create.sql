@@ -77,7 +77,6 @@ create or replace package glossary
 as
   function new(
    owner_id  	 in parties.party_id%TYPE,
-   name		 in cr_items.name%TYPE,
    title         in cr_revisions.title%TYPE,
    description   in cr_revisions.description%TYPE default null,
    package_id    in apm_packages.package_id%TYPE,
@@ -88,7 +87,7 @@ as
    is_live       in char default 'f'
   ) return cr_items.item_id%TYPE;
 
-end;
+end glossary;
 /
 show errors
 
@@ -96,7 +95,6 @@ create or replace package body glossary
 as
   function new(
    owner_id  	 in parties.party_id%TYPE,
-   name		 in cr_items.name%TYPE,
    title         in cr_revisions.title%TYPE,
    description   in cr_revisions.description%TYPE default null,
    package_id    in apm_packages.package_id%TYPE,
@@ -106,12 +104,26 @@ as
    context_id    in acs_objects.context_id%TYPE default null,
    is_live       in char default 'f'
   ) return cr_items.item_id%TYPE is
-    v_item_id integer;	
-    v_revision_id integer;
+    v_item_id         integer;	
+    v_revision_id     integer;
+    v_name            varchar(1000);
+    v_package_key     apm_packages.package_key%TYPE;
   begin
 
+  -- Get the object_id for the glossary to be created.
+  select acs_object_id_seq.nextval into v_item_id from dual;
+
+  -- Get the package_key that glossary is created in
+  select package_key into v_package_key from apm_packages where package_id = new.package_id;
+
+  -- Concatenate the two to form the name of the glossary.
+  v_name := v_package_key || v_item_id;
+
+  -- Create the glossary
+
   v_item_id := content_item.new( 
-   name => name, 
+   item_id => v_item_id,
+   name => v_name, 
    content_type => 'glossary',
    creation_date => creation_date,
    creation_user => creation_user,
@@ -260,6 +272,103 @@ begin
   content_folder.register_content_type( -100, 'glossary', 't');
   content_folder.register_content_type( -100, 'glossary_term', 't');
 end;
+/
+show errors
+
+create or replace package glossary_term
+as
+  function new(
+   term          in cr_revisions.title%TYPE,
+   definition    in cr_revisions.description%TYPE default null,
+   mime_type     in varchar,
+   package_id    in apm_packages.package_id%TYPE,
+   creation_date in date default sysdate,
+   creation_user in acs_objects.creation_user%TYPE default null,
+   creation_ip	 in acs_objects.creation_ip%TYPE default null,
+   context_id    in acs_objects.context_id%TYPE default null,
+   publish_status in cr_items.publish_status%TYPE
+  ) return cr_items.item_id%TYPE;
+
+end glossary_term;
+/
+show errors
+
+create or replace package body glossary_term
+as
+  function new(
+   term          in cr_revisions.title%TYPE,
+   definition    in cr_revisions.description%TYPE default null,
+   mime_type     in varchar,
+   package_id    in apm_packages.package_id%TYPE,
+   creation_date in date default sysdate,
+   creation_user in acs_objects.creation_user%TYPE default null,
+   creation_ip	 in acs_objects.creation_ip%TYPE default null,
+   context_id    in acs_objects.context_id%TYPE default null,
+   publish_status in cr_items.publish_status%TYPE
+  ) return cr_items.item_id%TYPE is
+    v_revision_id     integer;
+    v_name            varchar(1000);
+    v_item_id         cr_items.item_id%TYPE;
+    v_package_key     apm_packages.package_key%TYPE;
+    v_rel_id          acs_objects.object_id%TYPE;
+  begin
+
+  -- Get the object_id for the term to be created.
+  select acs_object_id_seq.nextval into v_item_id from dual;
+
+  -- Get the package_key that term is created in
+  select package_key into v_package_key from apm_packages where package_id = new.package_id;
+
+  -- Concatenate the two to form the name of the term.
+  v_name := v_package_key || v_item_id;
+
+  -- Create the glossary
+
+  v_item_id := content_item.new( 
+   item_id => v_item_id,
+   name => v_name, 
+   content_type => 'glossary_term',
+   creation_date => creation_date,
+   creation_user => creation_user,
+   creation_ip => creation_ip,
+   context_id => context_id
+  );  
+
+  v_revision_id := content_revision.new(
+   item_id => v_item_id,
+   title => term,
+   mime_type => mime_type,
+   text => definition,
+   creation_date => creation_date,
+   creation_user => creation_user,
+   creation_ip => creation_ip
+  );
+
+  insert into glossary_terms (term_id) values (v_revision_id);
+
+
+  update cr_items 
+      set publish_status = new.publish_status,
+      live_revision = v_revision_id
+      where item_id =v_item_id;
+
+  v_rel_id := acs_object.new (
+   object_type => 'cr_item_child_rel',
+   creation_date => creation_date,
+   creation_user => creation_user,
+   creation_ip => creation_ip
+  );
+
+  insert into cr_child_rels
+    (rel_id, parent_id, child_id, relation_tag)
+  values
+    (v_rel_id, context_id, v_item_id, 'parent glossary');
+  
+  return v_item_id;
+
+  end new;
+
+end glossary_term;
 /
 show errors
 

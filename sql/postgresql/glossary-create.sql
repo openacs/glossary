@@ -267,8 +267,8 @@ begin
       /* object_id => */	NULL,
       /* object_type => */	''cr_item_child_rel'',
       /* creation_date => */	current_timestamp,
-      /* creation_user => */	NULL,
-      /* creation_ip => */	NULL,
+      /* creation_user => */	p_creation_user,
+      /* creation_ip => */	p_creation_ip,
       /* context_id => */	p_context_id
   );
   

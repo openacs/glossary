@@ -13,6 +13,7 @@
 -- drop the glossary data model
 
 drop package glossary;
+drop package glossary_term;
 
 begin
   content_folder.unregister_content_type( -100, 'glossary_term', 't');
