@@ -38,7 +38,7 @@
 <b>Definition</b>:
 <p>
 <blockquote>
-@html_definition@
+@html_definition;noquote@
 </blockquote>
 <p>
 
@@ -54,11 +54,11 @@
 </if>
 
 <if @comment_link@ not nil>
-@comment_link@
+@comment_link;noquote@
 </if>
 
 <if @comments@ not nil>
-@comments@
+@comments;noquote@
 </if>
 <!-- end term info -->
 
