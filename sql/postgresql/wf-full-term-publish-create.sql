@@ -242,7 +242,7 @@ drop function inline_0 ();
          'approve_new_term',
          'end',
          'out',
-         'wf_callback.guard_attribute_true',
+         'wf_callback__guard_attribute_true',
          'approve_new_term_approved_p',
          'Approved'
 	);
@@ -278,7 +278,7 @@ drop function inline_0 ();
          'edit_definiton',
          'before_add_illustration',
          'out',
-         'wf_callback.guard_attribute_true',
+         'wf_callback__guard_attribute_true',
          'edit_definiton_is_definition_correct_p',
          'Is definition correct'
 	);
