@@ -12,6 +12,8 @@
 
 -- drop the glossary data model
 
+drop package glossary;
+
 begin
   content_folder.unregister_content_type( -100, 'glossary_term', 't');
   content_folder.unregister_content_type( -100, 'glossary', 't');
@@ -22,51 +24,34 @@ show errors
 -- drop all grantings of privleges 
 -- and then drop privileges on glossaries
 
+-- DRB: friggin drop script did not work as inherited from aD
+
 begin
   acs_privilege.remove_child('glossary_admin','glossary_create');
   acs_privilege.remove_child('glossary_admin','glossary_modify');
   acs_privilege.remove_child('glossary_admin','glossary_delete');
+  acs_privilege.remove_child('glossary_admin','glossary_term_comment_read');
+  acs_privilege.remove_child('glossary_admin','glossary_term_comment_on');
   acs_privilege.remove_child('glossary_admin','glossary_term_create');
   acs_privilege.remove_child('glossary_admin','glossary_term_modify');
   acs_privilege.remove_child('glossary_admin','glossary_term_delete');
-  acs_privilege.remove_child('glossary_admin','glossary_term_comment_on');
-  acs_privilege.remove_child('glossary_admin','glossary_term_upload_illustration');
+  acs_privilege.remove_child('glossary_admin','glossary_term_remove_illustration');
+  acs_privilege.remove_child('glossary_admin','glossary_term_modify_illustration');
   acs_privilege.remove_child('glossary_admin','glossary_term_delete_illustration');
-end;
-/
-show errors
 
-begin
-  delete from acs_permissions where privilege = 'glossary_admin';
-  acs_privilege.drop_privilege('glossary_admin');
-end;
-/
-show errors
-
-begin
-  delete from acs_permissions where privilege = 'glossary_drop';
-  acs_privilege.drop_privilege('glossary_drop');
-
-  delete from acs_permissions where privilege = 'glossary_modify';
+  acs_privilege.drop_privilege('glossary_create');
   acs_privilege.drop_privilege('glossary_modify');
-
-  delete from acs_permissions where privilege = 'glossary_delete';
   acs_privilege.drop_privilege('glossary_delete');
-
-  delete from acs_permissions where privilege = 'glossary_term_comment_on';
   acs_privilege.drop_privilege('glossary_term_comment_on');
-
-  delete from acs_permissions where privilege = 'glossary_term_modify';
+  acs_privilege.drop_privilege('glossary_term_comment_read');
+  acs_privilege.drop_privilege('glossary_term_create');
   acs_privilege.drop_privilege('glossary_term_modify');
-
-  delete from acs_permissions where privilege = 'glossary_term_delete';
   acs_privilege.drop_privilege('glossary_term_delete');
-
-  delete from acs_permissions where privilege = 'glossary_term_add_illustration';
   acs_privilege.drop_privilege('glossary_term_add_illustration');
+  acs_privilege.drop_privilege('glossary_term_modify_illustration');
+  acs_privilege.drop_privilege('glossary_term_delete_illustration');
+  acs_privilege.drop_privilege('glossary_admin');
 
-  delete from acs_permissions where privilege = 'glossary_term_drop_illustration';
-  acs_privilege.drop_privilege('glossary_term_drop_illustration');
 end;
 /
 show errors
@@ -169,6 +154,8 @@ end;
 show errors
 
 -- finish up
+drop view glossary_terms_latest;
+drop view glossary_terms_live_definition;
 drop view glossariesi;
 drop view glossariesx;
 drop table glossaries;
