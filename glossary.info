@@ -78,7 +78,6 @@ glossary's content will be stored in the content repository and its presentation
             <file type="query_file" db_type="postgresql" path="www/publish-postgresql.xql"/>
             <file type="content_page" path="www/publish.adp"/>
             <file type="content_page" path="www/publish.tcl"/>
-            <file type="content_page" path="www/source-file.tcl"/>
             <file type="query_file" db_type="oracle" path="www/term-add-edit-oracle.xql"/>
             <file type="query_file" db_type="postgresql" path="www/term-add-edit-postgresql.xql"/>
             <file type="content_page" path="www/term-add-edit.adp"/>
