@@ -12,13 +12,13 @@ ad_page_contract {
     @param item_id of the term 
 
     @author Walter McGinnis (walter@arsdigita.com)
+    @author Bart Teeuwisse (bart.teeuwisse@7-sisters.com)
     @creation-date 11-21-2000
     @cvs-id: $Id$
 } {
     item_id:optional,integer
     glossary_item_id:optional,integer
     term:optional,trim
-    name:optional,trim
     definition:html,optional,trim
     mime_type:optional
     publish_status:optional
@@ -45,17 +45,17 @@ if {[info exists item_id]} {
     set illustration_item_id [db_string  illuststration_exists {
 	select child_id as illustration_item_id from cr_child_rels 
 	where relation_tag = 'illustration' and parent_id = :item_id} -default ""]
-   
-   # configure the link to illustration-add-edit accordingly
-   if {![empty_string_p $illustration_item_id]} {
-       set illustration_link_url "illustration-add-edit?item_id=$illustration_item_id&term_item_id=$item_id"
-       set illustration_exists_p 1
-   } else {
-       set illustration_link_url "illustration-add-edit?term_item_id=$item_id"
-       set illustration_exists_p 0
-   }
-   
-   set context_bar [ad_context_bar "Edit Term"]
+    
+    # configure the link to illustration-add-edit accordingly
+    if {![empty_string_p $illustration_item_id]} {
+	set illustration_link_url "illustration-add-edit?item_id=$illustration_item_id&term_item_id=$item_id"
+	set illustration_exists_p 1
+    } else {
+	set illustration_link_url "illustration-add-edit?term_item_id=$item_id"
+	set illustration_exists_p 0
+    }
+    
+    set context_bar [ad_context_bar "Edit Term"]
 
 } else {
     ad_require_permission $glossary_item_id glossary_term_create
@@ -97,58 +97,53 @@ if {[template::form is_request new_term] && [info exists item_id]} {
 	where child_id = :item_id and relation_tag = 'parent glossary'}]
 
     template::element create new_term item_id \
-            -widget hidden \
-            -datatype number \
-            -value $item_id
+	-widget hidden \
+	-datatype number \
+	-value $item_id
 
     template::element create new_term glossary_item_id \
-            -widget hidden \
-            -datatype number \
-            -value $glossary_item_id
+	-widget hidden \
+	-datatype number \
+	-value $glossary_item_id
 
     # grab the info for the term
     db_1row term_select {
 	select term, definition, publish_status,
-	live_revision, latest_revision, name, mime_type,
+	live_revision, latest_revision, mime_type,
 	decode(acs_permission.permission_p(item_id,
-	:user_id,
-	'glossary_term_add_illustration'),
-	't', 1,
-	'f', 0) as illustration_add_p
+					   :user_id,
+					   'glossary_term_add_illustration'),
+	       't', 1,
+	       'f', 0) as illustration_add_p
 	from glossary_terms_latest
 	where item_id = :item_id
     }
 
     template::element create new_term term -label "Term" \
-                                                -widget text \
-	                                        -datatype text \
-	                                        -value $term \
-                                                -html { size 30 }
+	-widget text \
+	-datatype text \
+	-value $term \
+	-html { size 30 }
 
-    template::element create new_term name -label "Short Name for URL (no spaces)" \
-                                                -widget text \
-	                                        -datatype text \
-	                                        -value $name \
-                                                -html { size 15 }
-	
     template::element create new_term definition -label "Definition" \
-                                                      -widget textarea \
-	                                              -datatype text \
-					              -value $definition
+	-widget textarea \
+	-datatype text \
+	-value $definition \
+        -html { cols 54 rows 8}
 
     template::element create new_term mime_type \
-            -datatype text \
-            -widget select \
-            -options [list [list "Plain text" "text/plain"] [list "HTML" "text/html"]]  \
-            -values $mime_type
+	-datatype text \
+	-widget select \
+	-options [list [list "Plain text" "text/plain"] [list "HTML" "text/html"]]  \
+	-values $mime_type
     
     set publish_states [glossary_publish_states]
 
     element create new_term publish_status \
-            -datatype text \
-            -widget select \
-            -options $publish_states \
-            -values $publish_status
+	-datatype text \
+	-widget select \
+	-options $publish_states \
+	-values $publish_status
 
 } elseif {[template::form is_request new_term]} {
     # this is a new term
@@ -158,61 +153,56 @@ if {[template::form is_request new_term] && [info exists item_id]} {
     set live_p 0
 
     template::element create new_term glossary_item_id \
-            -widget hidden \
-            -datatype number \
-            -value $glossary_item_id
+	-widget hidden \
+	-datatype number \
+	-value $glossary_item_id
 
     template::element create new_term term \
-            -label "Term" \
-            -widget text \
-            -datatype text \
-            -html { size 30 }
+	-label "Term" \
+	-widget text \
+	-datatype text \
+	-html { size 30 }
 
-    template::element create new_term name \
-            -label "Short Name for URL (no spaces)" \
-            -widget text \
-            -datatype text \
-            -html { size 15 }
-	
     template::element create new_term definition \
-            -label "Definition" \
-            -widget textarea \
-            -datatype text 
+	-label "Definition" \
+	-widget textarea \
+	-datatype text \
+	-html { cols 54 rows 8}
 
-   template::element create new_term mime_type \
-           -datatype text \
-           -widget select \
-           -options [list [list "Plain text" "text/plain"] [list "HTML" "text/html"]]  \
-           -values "text/plain"
+    template::element create new_term mime_type \
+	-datatype text \
+	-widget select \
+	-options [list [list "Plain text" "text/plain"] [list "HTML" "text/html"]]  \
+	-values "text/plain"
 
     switch $glossary_workflow {
         "term_go_live_wf" {
             element create new_term publish_status \
-                    -datatype text \
-                    -widget hidden \
-                    -value "live"
+		-datatype text \
+		-widget hidden \
+		-value "live"
         } 
         "term_submission_process_wf" {
             element create new_term publish_status \
-                    -datatype text \
-                    -widget hidden \
-                    -value "ready"
+		-datatype text \
+		-widget hidden \
+		-value "ready"
         } 
         "full_term_publish_process_wf" {
             element create new_term publish_status \
-                    -datatype text \
-                    -widget hidden \
-                    -value "production"
+		-datatype text \
+		-widget hidden \
+		-value "production"
         }
     }
 }
 
 if [template::form is_valid new_term] {
 
-     set peeraddr [ad_conn peeraddr]
+    set peeraddr [ad_conn peeraddr]
 
     # context_id is the parent  glossary_item_id
-        
+    
     if [info exists item_id] {
         set revision_id [db_string get_next_revision_id {
 	    select acs_object_id_seq.nextval from dual
@@ -221,12 +211,12 @@ if [template::form is_valid new_term] {
 	db_transaction {
 	    db_dml term_update {
 		insert into glossary_termsi (
-		item_id, revision_id, title, context_id, 
-		creation_user, creation_ip, mime_type
-		) values (
-		:item_id, :revision_id, 
-		:term, :glossary_item_id, :user_id, :peeraddr, :mime_type
-		)
+		    item_id, revision_id, title, context_id, 
+		    creation_user, creation_ip, mime_type
+		    ) values (
+		    :item_id, :revision_id, 
+		    :term, :glossary_item_id, :user_id, :peeraddr, :mime_type
+	        )
 	    }
 
 	    if {![empty_string_p $definition]} {
@@ -240,8 +230,7 @@ if [template::form is_valid new_term] {
 
 	    db_dml set_revision_live_1 {
 	        update cr_items
-		set live_revision = :revision_id,
-		name = :name,
+		set live_revision = :revision_id
 		publish_status = :publish_status
 		where item_id = :item_id
 	    }
@@ -250,71 +239,21 @@ if [template::form is_valid new_term] {
 	# this is best wrapped up as a tcl proc i think
 	db_transaction {
 	    # insert a new content_item
-	    set new_item_id [db_exec_plsql term_new_content_item {
+	    set new_item_id [db_exec_plsql new_glossary_term {
 		begin
-		:1 := content_item.new (
-		name => :name,
-		content_type => 'glossary_term',
-                context_id => :glossary_item_id,
-                creation_user => :user_id,
-                creation_ip => :peeraddr
-		);
+		    :1 := glossary_term.new (
+		        title => :term,
+			definition => :definition,
+			mime_type => :mime_type,
+			package_id => :package_id,
+			creation_user => :user_id,
+			creation_ip => :peeraddr,
+			context_id => :glossary_item_id,
+			publish_status => :publish_status
+		    );
 		end;
 	    }]
 
-	   set new_revision_id [db_exec_plsql term_new_content_revision_1 {
-	       begin
-	       :1 := content_revision.new(
-	       item_id => :new_item_id,
-	       title => :term,
-	       creation_user => :user_id,
-	       creation_ip => :peeraddr
-	       );
-		end;
-	    }]
-
-	    db_dml term_insert {
-		insert into glossary_terms (
-		term_id
-		) values (
-		:new_revision_id
-		)
-	    }
-	      
-	    if {![empty_string_p $definition]} {
-		db_dml term_definition_update_2 {
-		    update cr_revisions
-		    set content = empty_blob()
-		    where revision_id = :new_revision_id
-		    returning content into :1
-		} -blobs [list $definition]
-	    }
-
-	    db_dml set_revision_live_2 {
-	        update cr_items
-		set live_revision = :new_revision_id,
-		name = :name, 
-		publish_status = :publish_status
-		where item_id = :new_item_id
-	    }
-
-	    # we associate the term with its parent glossary	    
-	    set rel_id [db_exec_plsql term_new_content_revision_2 {
-		begin
-		:1 := acs_object.new(
-		object_type	=> 'cr_item_child_rel',
-		context_id	=> :glossary_item_id
-		);
-		end;
-	    }]
-
-	    db_dml set_parent_glossary {
-		insert into cr_child_rels (
-		rel_id, parent_id, child_id, relation_tag
-		) values (
-		:rel_id, :glossary_item_id, :new_item_id, 'parent glossary'
-		)
-	    }
 	    # need to find out what the right thing to do for context_key is
 	    # until then...
 	    set context_key "default"
@@ -324,19 +263,18 @@ if [template::form is_valid new_term] {
 		wf_case_new $glossary_workflow $context_key $new_item_id
 	    }
 	}
-	set item_id $new_item_id
+	set item_id $new_item_id 
     }
 
-switch $glossary_workflow {
-    "term_go_live_wf" {
-	ad_returnredirect "term?item_id=$item_id"
-    } 
-    "term_submission_process_wf" {
-	ad_returnredirect "."
-    } 
-    "full_term_publish_process_wf" {
-	ad_returnredirect "."
-    }
+    switch $glossary_workflow {
+	"term_go_live_wf" {
+	    ad_returnredirect "term?item_id=$item_id"
+	} 
+	"term_submission_process_wf" {
+	    ad_returnredirect "."
+	} 
+	"full_term_publish_process_wf" {
+	    ad_returnredirect "."
+	}
     }    
-    
 }

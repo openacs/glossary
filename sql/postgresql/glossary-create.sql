@@ -1,6 +1,7 @@
 -- packages/glossary/sql/glossary-create.sql
 
 -- @author Walter McGinnis (walter@arsdigita.com)
+-- @author Bart Teeuwisse (bart.teeuwisse@7-sisters.com)
 -- @creation-date 2000-08-18
 -- @cvs-id $ID:$
 
@@ -82,26 +83,36 @@ select content_type__create_attribute (
 -- should add locale and nls_language for full internationalization?
 -- this is dependent on the standards for ACS globilization
 -- will do the right thing later
-create function glossary__new(integer, varchar, varchar, varchar, integer,
+create function glossary__new(integer, varchar, varchar, integer,
                               integer, varchar, integer, boolean) returns integer as '
 declare
    p_owner_id      alias for $1;
-   p_name          alias for $2;
-   p_title         alias for $3;
-   p_description   alias for $4;
-   p_package_id    alias for $5;
-   p_creation_user alias for $6;
-   p_creation_ip   alias for $7;
-   p_context_id    alias for $8;
-   p_is_live       alias for $9;
-   v_item_id integer;	
-   v_revision_id integer;
+   p_title         alias for $2;
+   p_description   alias for $3;
+   p_package_id    alias for $4;
+   p_creation_user alias for $5;
+   p_creation_ip   alias for $6;
+   p_context_id    alias for $7;
+   p_is_live       alias for $8;
+   v_name          cr_items.name%TYPE;
+   v_package_key   apm_packages.package_key%TYPE;
+   v_item_id       integer;	
+   v_revision_id   integer;
 begin
+  -- Get the object_id for the glossary to be created.
+  select into v_item_id acs_object_id_seq.nextval;
 
+  -- Get the package_key that glossary is created in
+  select package_key into v_package_key from apm_packages where package_id = p_package_id;
+
+  -- Concatenate the two to form the name of the glossary.
+  v_name := v_package_key || v_item_id;
+
+  -- Create the glossary
   v_item_id := content_item__new( 
-   /* name => */          p_name, 
+   /* name => */          v_name, 
    /* parent_id */        NULL,
-   /* item_id */          NULL,
+   /* item_id */          v_item_id,
    /* locale */           NULL,
    /* creation_date => */ current_timestamp,
    /* creation_user => */ p_creation_user,
@@ -179,6 +190,97 @@ select content_type__create_type(
 -- establish the parent child relationship between the glossary content type and the glossary term content type
 
 select content_type__register_child_type('glossary','glossary_term','parent glossary', 0, NULL);
+
+create function glossary_term__new (varchar, varchar, varchar, integer,
+                                    integer, varchar, integer, varchar) returns integer as '
+declare
+   p_title          alias for $1;
+   p_definition     alias for $2;
+   p_mime_type	    alias for $3;
+   p_package_id     alias for $4;
+   p_creation_user  alias for $5;
+   p_creation_ip    alias for $6;
+   p_context_id     alias for $7;
+   p_publish_status alias for $8;
+   v_name           cr_items.name%TYPE;
+   v_package_key    apm_packages.package_key%TYPE;
+   v_item_id        acs_objects.object_id%TYPE;
+   v_revision_id    acs_objects.object_id%TYPE;
+   v_rel_id         cr_child_rels.rel_id%TYPE;
+begin
+  -- Get the object_id for the term to be created.
+  select into v_item_id acs_object_id_seq.nextval;
+
+  -- Get the package_key that term is created in
+  select package_key into v_package_key from apm_packages where package_id = p_package_id;
+
+  -- Concatenate the two to form the name of the term.
+  v_name := v_package_key || v_item_id;
+
+  -- Create the term
+  v_item_id := content_item__new( 
+      /* name => */          v_name, 
+      /* parent_id */        NULL,
+      /* item_id */          v_item_id,
+      /* locale */           NULL,
+      /* creation_date => */ current_timestamp,
+      /* creation_user => */ p_creation_user,
+      /* context_id => */    p_context_id,
+      /* creation_ip => */   p_creation_ip,
+      /* item_subtype */     ''content_item'',
+      /* content_type => */  ''glossary_term'',
+      /* title => */         NULL,
+      /* description => */   NULL,
+      /* mime_type => */     NULL,
+      /* nls_language => */  NULL,
+      /* text => */          NULL,
+      /* storage_type */     ''text''
+  );  
+
+  v_revision_id := content_revision__new(
+      /* title => */         p_title,
+      /* description => */   p_definition,
+      /* publish_date => */  current_timestamp,
+      /* mime_type => */     p_mime_type,
+      /* nls_language => */  NULL,
+      /* data => */          NULL,
+      /* item_id => */       v_item_id,
+      /* revision_id => */   NULL,
+      /* creation_date => */ current_timestamp,
+      /* creation_user => */ p_creation_user,
+      /* creation_ip => */   p_creation_ip
+  );
+
+  insert into glossary_terms (term_id) values (v_revision_id);
+
+  update cr_revisions
+      set content = p_definition
+      where revision_id = v_revision_id;
+
+  update cr_items 
+      set publish_status = p_publish_status,
+      live_revision = v_revision_id
+      where item_id =v_item_id;
+
+  -- Associate the term with its parent glossary
+  v_rel_id := acs_object__new(
+      /* object_id => */	NULL,
+      /* object_type => */	''cr_item_child_rel'',
+      /* creation_date => */	current_timestamp,
+      /* creation_user => */	NULL,
+      /* creation_ip => */	NULL,
+      /* context_id => */	p_context_id
+  );
+  
+  insert into cr_child_rels (
+      rel_id, parent_id, child_id, relation_tag
+      ) values (
+      v_rel_id, p_context_id, v_item_id, ''parent glossary''
+  );
+  
+  return v_item_id;
+
+end;' language 'plpgsql';
 
 create view glossary_terms_latest as
 	select i.item_id, i.live_revision, r.revision_id as latest_revision,

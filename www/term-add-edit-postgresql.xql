@@ -62,75 +62,20 @@
       </querytext>
 </fullquery>
 
- 
-<fullquery name="term_new_content_item">      
+<fullquery name="new_glossary_term">
       <querytext>
 
-        select content_item__new (
-		varchar :name,
-                NULL,
-                NULL,
-                NULL,
-                current_timestamp,
-                :user_id,
-                :glossary_item_id,
-                :peeraddr,
-                'content_item',
-                'glossary_term',
-                NULL,
-                NULL,
-                NULL,
-                NULL,
-                NULL
-        );
-	    
-      </querytext>
-</fullquery>
-
- 
-<fullquery name="term_new_content_revision_1">      
-      <querytext>
-
-           select content_revision__new(
-               :term,
-               NULL,
-               current_timestamp,
-               :mime_type,
-               NULL,
-               NULL,
-               :new_item_id,
-               NULL,
-               current_timestamp,
-               :user_id,
-               :peeraddr
-           );
-	    
-      </querytext>
-</fullquery>
-
- 
-<fullquery name="term_definition_update_2">      
-      <querytext>
-
-         update cr_revisions
-         set content = :definition
-         where revision_id = :new_revision_id
-		
-      </querytext>
-</fullquery>
- 
-<fullquery name="term_new_content_revision_2">      
-      <querytext>
-
-         select acs_object__new(
-            NULL,
-            'cr_item_child_rel',
-            current_timestamp,
-            NULL,
-            NULL,
-            :glossary_item_id
+	 select glossary_term__new (
+           :term,
+           :definition,
+           :mime_type,
+           :package_id,
+           :user_id,
+           :peeraddr,
+           :glossary_item_id,
+           :publish_status
 	 );
-	    
+	
       </querytext>
 </fullquery>
  

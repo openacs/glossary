@@ -19,7 +19,7 @@
       
 	    update cr_items
 	    set live_revision = :revision_id,
-	    name = :name,
+	    name = :package_id || '_' || :item_id,
 	    publish_status = 'live'
 	    where item_id = :item_id
 	

@@ -1,6 +1,7 @@
 -- packages/glossary/sql/glossary-drop.sql
 
 -- @author Walter McGinnis (walter@arsdigita.com)
+-- @author Bart Teeuwisse (bart.teeuwisse@7-sisters.com)
 -- @creation-date 2000-10-03
 -- @cvs-id $ID:$
 
@@ -15,7 +16,7 @@
 select content_folder__unregister_content_type(-100, 'glossary_term', 't');
 select content_folder__unregister_content_type(-100, 'glossary', 't');
 
-drop function glossary__new(integer, varchar, varchar, varchar, integer, integer, varchar, integer, boolean);
+drop function glossary__new(integer, varchar,  varchar, varchar, integer, integer, varchar, integer, boolean);
 
 -- drop all grantings of privleges 
 -- and then drop privileges on glossaries
@@ -54,6 +55,8 @@ select content_type__unregister_child_type('glossary', 'glossary_term', 'parent 
 select content_type__unregister_child_type('glossary_term','image','illustration');
 
 -- delete all glosary_term objects
+
+drop function glossary_term__new (varchar, varchar, varchar, integer, integer, varchar, integer, varchar);
 
 -- we must clear out our term objects,
 -- otherwise there will be foreign key constraint problems
@@ -98,7 +101,6 @@ end;' language 'plpgsql';
 
 select inline_0();
 drop function inline_0();
-
 
 -- dropping the attributes for glossaries
 

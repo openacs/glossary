@@ -39,7 +39,6 @@
       
 	        update cr_items
 		set live_revision = :revision_id,
-		name = :name,
 		publish_status = :publish_status
 		where item_id = :item_id
 	    

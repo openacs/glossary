@@ -60,7 +60,6 @@
 
 	 select glossary__new (
            :owner_id,
-           :name,
            :title,
            :description,
            :package_id,

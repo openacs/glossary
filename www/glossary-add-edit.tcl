@@ -7,7 +7,6 @@ ad_page_contract {
     @param item_id what glossary item are we updating
     @param context_id what object are we going to inherit security settings from, currently not in use, but will be in the future
     @param title of glossary
-    @param name of glossary object for cr_items
     @param description of glossary fro cr_items
     @param owner_id currently not passed in, but will be in the future
 
@@ -16,13 +15,13 @@ ad_page_contract {
     @param owner_id of the party that owns the glossary
 
     @author Walter McGinnis (walter@arsdigita.com)
+    @author Bart Teeuwisse (bart.teeuwisse@7-sisters.com)
     @creation-date 11-20-2000
     @cvs-id: $Id$
 } {
     context_id:optional,integer
     item_id:optional,integer
     title:optional,trim
-    name:optional,trim
     description:optional,trim
     owner_id:integer,optional
 } -properties {  
@@ -148,16 +147,16 @@ if {[template::form is_request new_glossary] && [info exists item_id]} {
 	                                        -value $title \
                                                 -html { size 30 }
 
-    template::element create new_glossary name -label "Short Name for URL (no spaces)" \
-                                                -widget text \
-	                                        -datatype text \
-	                                        -value $name \
-                                                -html { size 15 }
+#     template::element create new_glossary name \
+# 	-widget hidden \
+# 	-datatype text \
+# 	-value ""
 	
     template::element create new_glossary description -label "Description" \
-                                                      -widget textarea \
-	                                              -datatype text \
-	                                              -value $description
+	-widget textarea \
+	-datatype text \
+	-value $description \
+	-html { cols 80 rows 8 }
 
     # form elements temporarily dropped
     #  template::element create new_glossary owner_name -label "Owner" \
@@ -175,15 +174,15 @@ if {[template::form is_request new_glossary] && [info exists item_id]} {
 	                                        -datatype text \
                                                 -html { size 30 }
 
-    template::element create new_glossary name -label "Short Name for URL (no spaces)" \
-                                                -widget text \
-	                                        -datatype text \
-                                                -html { size 15 }
+#     template::element create new_glossary name \
+# 	-widget hidden \
+# 	-datatype text \
+# 	-value "${package_id}_${item_id}"
 	
     template::element create new_glossary description -label "Description" \
-                                                      -widget textarea \
-	                                              -datatype text \
-
+	-widget textarea \
+	-datatype text  \
+	-html { cols 80 rows 8 }
 }
 
 if [template::form is_valid new_glossary] {
@@ -223,7 +222,7 @@ if [template::form is_valid new_glossary] {
 	db_dml set_revision_live {
 	    update cr_items
 	    set live_revision = :revision_id,
-	    name = :name
+	    name = :package_id || '_' || :item_id,
 	    publish_status = 'live'
 	    where item_id = :item_id
 	}
@@ -237,7 +236,7 @@ if [template::form is_valid new_glossary] {
 	    begin
 	    :1 := glossary.new (
 	    owner_id => :owner_id,
-	    name => :name,
+	    name => :package_id || '_' || :item_id,
 	    title => :title,
             description => :description,
 	    package_id => :package_id,
