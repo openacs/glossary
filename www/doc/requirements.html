@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+ <head>
+  <title>Glossary Requirements</title>
+ </head>
+
+ <body bgcolor=white>
+
+  <h2>Glossary Requirements</h2> 
+
+  by <a href="mailto:walter@arsdigita.com">Walter McGinnis</a>,
+
+  <hr>
+
+  <a name="introduction">
+  <h3>I. Introduction</h3>
+
+  The following is a requirements document for the Glossary
+  Package version 4.0a.
+
+  <a name="vision">
+  <h3>II. Vision Statement</h3>
+
+  The Glossary Package is based on the ACS 3.x glossary module which was simply
+  a repository for a site's terms and their definitions.  
+<p>
+  In the process of migrating the glossary to an ACS 4.0 package, we will 
+  expand it's feature set to support multiple <i>contexts</i>.  A site, subsite, 
+  group, user, or even document (a this point the document must exist in the database as an ACS object) may have one or more glossaries associated 
+  with it.  Terms may have illustrations (acs-content-repository).  Each glossary can have its security set (acs-permissions), a workflow, and 
+  optionally except user comments.  A glossary's content will be stored in 
+  the content repository and its presentation will use the ArsDigita Templating System (ATS).
+
+  <a name="package">
+  <h3>III. Package Overview</h3>
+
+  The Glossary package provides:
+
+  <ul>
+
+   <li>A mechanism for creating a new glossary with a title and description
+   which may be associated with 0 or more areas of content such as a site, subsite, group, user, 
+   document, or group of documents. </li>
+
+   <p>
+
+   <li>A mechanism for setting and determining who can read, write, and administer
+   an entire glossary or an individual term (permissions and contexts)</li>
+
+   <p>
+
+   <li>A way to set an approval policy for each glossary (workflow)</li>
+
+   <p>
+
+   <li>A mechanism for adding, editing, and deleting terms and their 
+   definitions.</li>
+
+   <p>
+   <li>Mechanism for users to comment on terms. This feature is controlled by the administrator of the glossary via setting permissions.</li>
+   
+  </ul>
+
+  <a name="usercases">
+  <h3>IV. Use-cases and User-scenarios</h3>
+
+  <p>
+  Patricia Punkprogammer starts up a community website called punk-not-dead.net.
+  She researches and creates a publicly readable glossary for the site about being punk.  
+  She decides that only a set of designated punk-not-dead site glossary authors can add terms and definitions, but that 
+  all users can add comments. It is listed at punk-not-dead.net/glossaries/.
+
+  <p>
+  Anna Anarchist, who is not a designated punk-not-dead site glossary author, decides that only adding comments on terms in punk-not-dead.net's 
+  glossary isn't enough to let her express her view of being punk.  She makes her
+  own publicly readable and comment-able glossary (thanks to Patricia creating a glossary for her and then granting her permission to administrate it)  which is listed at 
+  punk-not-dead.net/glossaries/.
+
+  <p>
+  Steve Skateboarder writes an article for punk-not-dead.net titled "The Pleasures of 
+  Being a Public Nuisance on Four Wheels" which ends with a description of how to put 
+  a skateboard together.  He creates a glossary for the article that defines the different
+  parts of a skateboard.  Users cannot comment.  He links to the different terms within
+  his article and provides a link to the glossary at the beginning and end of the article.  
+  It is also listed at punk-not-dead.net/glossaries/.
+
+  <p>
+  Steve Skateboarder also creates a personal glossary of terms that he may need for writing 
+  upcoming articles.  He keeps this private. It is not listed at punk-not-dead.net/glossaries/.
+
+  <p>
+  Commie Karl creates a subsite (thanks to Patricia configuring the ACS for him) for 
+  communist punks and starts up a glossary for it.  Members contribute terms and 
+  definitions and can also comment.  The glossary is publicly readable so that 
+  "fellow travelers" that are not members of the subsite can also view it.  It is 
+  listed at punk-not-dead.net/commies/glossaries/ (commies being the subsite's site-node).
+
+  <h3>V. Related Links</h3>
+
+  <ul>
+    <li><a href=./>Document Index</a>
+    <li><a href=design>Design document</a></li>
+    <li><a href=/doc/acs-content-repository/design>Content Repository Design</a></li>
+    <li><a href=/doc/acs-kernel/subsites/design.html>Subsites Design</a></li>
+    <li><a href=/doc/acs-workflow/design>Workflow Design</a></li>
+
+  </ul>
+
+
+  <a name="functional">
+  <h3>VI. Requirements</h3>
+
+  <p><strong>10.0 Glossary Creation</strong>
+
+  <p>Users (sometimes limited to administrative users only) can create glossaries
+
+  <p><strong>20.0 Glossary Security</strong>
+
+  <p>Users (sometimes limited to administrators) can set and modify security permissions on individual glossaries.
+
+  <ul>
+  <li>20.1 The glossary owner (usually the same as creating party, but not always) has full privileges</li>
+  <ul>
+  <li>glossary create</li>
+  <li>glossary modify</li>
+  <li>glossary delete</li>
+  <li>glossary term create</li>
+  <li>glossary term modify</li>
+  <li>glossary term delete</li>
+  <li>glossary term comment read</li>
+  <li>glossary term comment on</li>
+  <li>glossary term add illustration</li>
+  <li>glossary term drop illustration</li>
+  </ul>
+  <p>
+  <i>Note -- Specialized privileges are necessary for two reasons: 
+  <ol>
+  <li>To support finer grain actions on the glossary, term, and illustration objects, assigned to users and tracked via workflow</li>
+  <li>So the set of privileges can be assigned as children of a glossary admin privilege</li>
+</ol>
+</i>
+  <p>
+  <li>20.2 The glossary owner can grant permission of any privilege on a glossary that they own to any party.
+  <p>
+  <li>20.3 Security checks are carried out for each action on each object in the Glossary package</li>
+  </ul>
+
+  <p><strong>30.0 Index of Package Instance's Glossaries</strong>
+
+  <p>Users can view a list of the package instance's glossaries which they have been granted permission to read.  It should also provide or link to a mechanism's for administering glossaries.
+
+
+  <p><strong>40.0 Glossary Term Creation, Modification, and Deletion</strong>
+
+  <p>Users can create, modify, and delete terms in glossaries that they have granted the corresponding privileges on. Such tasks will often be assigned via the Workflow system.<i>Note -- Currently, you must set privileges from separately from task assignment</i>
+
+  <p><strong>50.0 Adding Glossary Term Illustrations</strong>
+
+  <p>Users can add illustrations to terms by uploading images.
+
+  <p><strong>60.0 Glossary Term User Comments</strong>
+
+  <p>If the glossary owner (or anyone that has administrative privileges on the glossary) so designates users can attach comments and files (often image files) to a term in the glossary.
+
+
+  <p><strong>70.0 Subsite Glossaries</strong>
+
+  <p>There can be multiple instances of the Glossary Package running on a site.
+
+  <p><strong>80.0 Glossary Workflows</strong>
+
+  <p>Glossary owners and others that have administrative privilege on a glossary can set up "workflows" for that glossary.  This corresponds to the old approval policy in the glossary module, however it is much more flexible and sophisticated.
+
+  <ul>
+  <li>80.1 There are three preloaded workflows included</li>
+  <ul>
+  <li>Terms are published immediately</li>
+  <p>
+  <li>Simple publishing: terms are submitted and then approved or rejected</li>
+  <p>
+  <LI>Sophisticated publishing process: terms are added by editor or publisher, author creates definition for term, editor reviews definition, graphic designer creates illustration, finally editor approves or rejects terms</li>
+  </ul>
+  <p>It should be noted that designating who can do what action is accomplished via setting permissions and assigning tasks to users in the workflow mechanism.
+  <p><strong>90.0 Glossary Associations</strong>
+
+  <p>Glossaries can be "attached" to an other object in ACS (i.e. an object in the ACS data model stored in the database).  This is particularly useful with content items like articles, white papers, bboards, etc.
+
+<!--
+
+
+  <p><strong>10.0 Fully Utilize ACS 4.0 Core</strong>
+  <p>    
+  In order to reduce redundant code and aid maintainability we 
+  should strive to use ACS Core APIs where ever applicable. 
+
+  <ul>
+   <li>
+    <a name="10.0">
+    <strong>10.0 ACS Objects</strong>
+    <p>
+    Used for identification, context, relations between objects, and meta-data about 
+    objects and object types.
+    </p>
+
+    <ul>
+    
+    <li><strong>10.0.1 Identification</strong>
+    <p>
+    Glossaries and terms are parent and child object types.  Each instance of these
+    types (i.e. each object) will have a site wide unique identifier as per the 
+    ACS Objects data model.
+    </p></li>
+
+    <li><strong>10.0.5 Context (fundamental aspect of access control)</strong>
+    <p>
+    Used to set up a default security setting for an object.  Terms will 
+    in most inherit there security settings from their parent glossary.  Used in 
+    conjunction with permissions, parties, and subsites APIs.
+    </p></li>
+
+    </p></li>
+
+
+
+    <li><strong>20.0 Fully Templated</strong>
+    <p>
+    All user and admin pages should be fully templated using the ATS.
+    </p></li>
+
+    <li><strong>30.0 Content stored in the Content Repository</strong>
+    <p>
+    Terms and their definitions should be stored in the content repository.
+    </p></li>
+
+    <li><strong>40.0 Use ACS security packages</strong>
+    <p>
+    Use the parties and permissions packages in conjunction with object context
+    to answer the question "Can user x read/write/administer glossary/term y?".
+    </p></li>
+
+    <li><strong>50.0 Use ACS Workflow </strong>
+    <p>
+    In the ACS 3.x, there was only one glossary per site and its "approval policy" was set in
+    its ACS parameter file.  The site administrator chose from the following:
+    <p>
+    <blockquote>
+    open -- meaning that any user could post a new term
+    wait -- users submitted a term and the administrator approved (meaning it would appear in the glossary) or rejected it.
+    closed -- only administrators could add terms.
+    </blockquote>
+    Now that there can be several glossaries per site we use the workflow 
+    package to allow users to select an "approval policy" that is appropriate for their glossary.
+    This is combined with the security packages mentioned above.
+    </p></li>
+
+    <li><strong>60.0 </strong> 
+    <p>
+    All user and admin pages should be fully templated using the ATS.
+    </p></li>
+
+    </ul>
+-->
+    <h3>VII. Revision History</h3>
+
+    <table cellpadding=2 cellspacing=2 width=90% bgcolor=#efefef>
+    <tr bgcolor=#e0e0e0>
+    <th width=10%>Document Revision #</th>
+    <th width=50%>Action Taken, Notes</th>
+    <th>When?</th>
+    <th>By Whom?</th>
+    </tr>
+
+    <tr>
+    <td>0.1</td>
+    <td>Creation</td>
+    <td>9/12/2000</td>
+    <td>Walter McGinnis</td>
+    </tr>
+
+    <tr>
+    <td>0.1</td>
+    <td>Review</td>
+    <td>11/18/2000</td>
+    <td>Mike Bryzek</td>
+    </tr>
+
+    <tr>
+    <td>0.2</td>
+    <td>Revised</td>
+    <td>12/01/2000</td>
+    <td>Walter McGinnis</td>
+    </tr>
+    </table>
+
+
+  <hr>
+
+  <address>
+   <a href="mailto:walter@arsdigita.com">walter@arsdigita.com</a>
+  </address>
+
+<!-- hhmts start -->
+Last modified: Mon Aug 28 11:50:29 EDT 2000
+<!-- hhmts end -->
+
+ </body>
+</html>

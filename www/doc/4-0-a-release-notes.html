@@ -1,0 +1,44 @@
+<!-- design.html -->
+<!-- @author Walter McGinnis (walter@arsdigita.com) -->
+<!-- @creation-date 2000-12-01 -->
+<!-- @cvs-id $ID:$ -->
+<html>
+<head>
+<title>Glossary Package 4.0a Release Notes</title>
+</head>
+<body text=black bgcolor=white>
+
+<h2>Glossary Package 4.0a Release Notes</h2>
+
+by <a href=mailto:walter@arsdigita.com>Walter McGinnis</a>
+
+<hr>
+
+<Ul>
+<li>There are substantial comments in the code about things that might break in this release.  Take a look there for answers if something breaks.</li>
+</ul>
+<p>Currently, I hope to have the following done by the final release.
+<ul>
+<li>UI support for multiple illustrations for a term</li>
+<li>UI support for associating a glossary with another object</li>
+<li>UI support for setting a glossary owner other than the creating user</li>
+<li>a proc to create a glossary associated with a specific object, available to other packages</li>
+<li>UI for setting owner of glossary other than creating user</li>
+<li>UI for displaying owner of glossary</li>
+<li>better handling of navigation for workflow and general-comments</li>
+<li>should throw an error in workflow and general-comments have not been instatiated</li>
+</ul>
+<p>Configuration
+<ul>
+<li>Make sure your instanciate acs-workflow and general-comments in the following site-node map:</li>
+<ul>
+<<i><i>parent-site-node</i>/</li>
+<li><i>parent-site-node</i>/<i>acs-workflow-package</i></li>
+<li><i>parent-site-node</i>/<i>general-comments-package</i></li>
+<li><i>parent-site-node</i>/<i>glossary-package</i></li>
+</ul>
+</ul>
+<hr>
+<address><a href=mailto:walter@arsdigita.com>walter@arsdigita.com</a></address>
+</body>
+</html>

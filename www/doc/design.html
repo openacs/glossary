@@ -1,0 +1,189 @@
+<!-- design.html -->
+<!-- @author Walter McGinnis (walter@arsdigita.com) -->
+<!-- @creation-date 2000-11-20 -->
+<!-- @cvs-id $ID:$ -->
+<html>
+<head>
+<title>Glossary Package Design</title>
+</head>
+<body bgcolor=white text=black>
+<h4>Glossary Package Design</h4>
+by <a href=mailto:walter@arsdigita.com>Walter McGinnis</a>
+<hr>
+
+<!-- <i>Also, bear in mind <b>the audience</b> for detailed design: fellow
+programmers who want to maintain/extend the software, AND parties
+interested in evaluating software quality. </i> -->
+
+</p>
+
+
+<h3>I.  Essentials</h3>
+
+<ul>
+    <li> User directory: <a href=../>/glossaries/</a> </li>
+    <p>
+    <li> Tcl script API: <a href=/api-doc/>See API Browser</a></li>
+    <li> PL/SQL file: <a href=/api-doc/plsql-subprogram-one?type=PACKAGE&name=GLOSSARY>Glossary Package</a></li>
+    <li> Data model: <a href=/doc/sql/display-sql?url=glossary-create.sql&package_key=glossary><i>server_root</i>/packages/glossary/sql/glossary-create.sql</a></li>
+    <p>
+    <li> Requirements document: <a href=requirements>glossary/www/doc/requirements</a></li>
+<!--    <li> ER diagram </li> -->
+<!--     <li> Transaction flow diagram </li> -->
+</ul>
+
+
+<h3>II.  Introduction</h3>
+
+<p>
+
+  The Glossary Package is based on the ACS 3.x glossary module which was simply
+  a repository for a site's terms and their definitions.  
+<p>
+  In the process of migrating the glossary to an ACS 4.0 package, we will 
+  expand it's feature set to support multiple <i>contexts</i>.  A site, subsite, 
+  group, user, or even document (a this point the document must exist in the database as an ACS object) may have one or more glossaries associated 
+  with it.  Terms may have illustrations (acs-content-repository).  Each glossary can have its security set (acs-permissions), a workflow, and 
+  optionally except user comments.  A glossary's content will be stored in 
+  the content repository and its presentation will use the ArsDigita Templating System (ATS).
+
+<p>
+The Glossary Package does not provide a mechanism to expire content (glossaries or terms).  
+<p>
+Glossaries provide excellent support for collaboration.  Referring to terms' definitions can keep misunderstanding in check thus making it easier to work in groups.
+
+<p>The ArsDigita Content Management System is a more general interface to the content repository.  With minor tweaking, the Glossary Package's data model can be used with it, but one would probably not want to use both UI's simultaneously (currently the effects are untested).
+
+<h3>III.  Historical Considerations</h3> 
+
+<p>
+The original Glossary module was simple and very limited.  There could only be one per site.  It probably only took a matter of hours to implement.
+<p>
+With the move to a new platform, ACS 4.0, we gain from the system's base functionality.  We take this opportunity to greatly expand the feature set of the Glossary.
+
+<ul>
+<li>It is now possible to have Subsites, also known as site-nodes, that can be mounted under the parent site's web root which have their own set of packages and corresponding security settings, user pages, and administrative interface.</li>
+<p>
+<li>The Content Repository now provides a system for unified versioning, tracking, approval policy (ties in nicely with acs-workflow), and content relationships.  We can now easily relate a glossary with a party (user or group) or document (another piece of content).  We can create illustrations for terms by uploading an image, an included content type, and then adding mapping of parent term to child image.
+<p>There is also support in the data model for multiple languages.  We hope multi-language support can be added in the future.</li>
+<p>
+<li>The ArsDigita Templating System (ATS) now comes standard with ACS 4.0, hurray.  Perhaps my most wished for improvement to the ACS, the ATS provides separation of programming logic and presentation markup.  In the future this will allow for multiple presentations for the Glossary Package, (HTML, WAP, Palm, multiple languages) based on user preferences.  Right now, it provides a better way for programmers and graphic designers to interact.  Allah luyah.</li>
+
+</ul>
+
+<h3>IV.  Competitive Analysis</h3>
+
+<p>
+There are lots of glossaries on the Web, however, I was unable to find a website that used anything but static HTML files for glossaries.
+</p>
+
+<h3>V.  Design Tradeoffs</h3> 
+
+<p>By expanding the feature set, we greatly expand the complexity of the logic required to implement the package.  Thankfully, most of this logic is held in the ACS platforms built in APIs and we simply have to tap them.
+<p>
+The biggest single trade off in the Glossary Package's design is having multiple glossaries per package instance.  We lose potential flexibility in URL mapping of site nodes to single glossaries and some simplicity of administration.  I feel this trade off is necessary until there is a standard for cross-instance sharing of data, i.e. I can see all the packages' glossaries that I have permission to see from one index.
+<p>I also decided to use specialized privileges in order to be able to grant a set of privileges to an admin easily and to tie into complex workflows more elegantly.
+
+<!-- <p>
+No single design solution can optimize every desirable software
+attribute. For example, an increase in the security of a system will
+likely entail a decrease in its ease-of-use, and an increase in the
+flexibility/generality of a system typically entails a decrease in the
+simplicity and efficiency of that system. Thus a developer must decide
+to put a higher value on some attributes over others: this section
+should include a discussion of the tradeoffs involved with the design
+chosen, and the reasons for your choices. Some areas of importance to
+keep in mind are:
+</p>
+
+Areas of interest to users: 
+<ul>
+    <li> Performance: availability and efficiency  </li>
+    <li> Flexibility  </li>
+    <li> Interoperability  </li>
+    <li> Reliability and robustness  </li>
+    <li> Usability  </li>
+</ul>
+
+Areas of interest to developers:
+<ul>
+    <li> Maintainability </li> 
+    <li> Portability </li>
+    <li> Reusability </li>
+    <li> Testability </li>
+</ul>
+<p>
+-->
+
+<h3>VI.  API</h3> 
+
+<p>The Glossary Package is an <i>application</i> based on the Content Repository <i>service</i> package and the rest of the of ACS Kernel packages, as well as the Workflow and General-Comments packages.  As such it inherits practically all of its API.
+
+<h3>VII.  Data Model Discussion</h3>
+<p>The Glossary Package Data Model is largely just creating custom content types (parent glossaries and their terms)for the Content Repository.  We also create a relationship between the term content type and the image content type, we call this relationship an illustration.  There are also some privileges and workflows created to tie into Permissions, General-Comments, and Workflow.
+
+<p>need to discuss attributes of objects and how the relate
+<h3>VIII.  User Interface</h3>
+
+<p>We deviate from the normal user directory admin directory split and base a set of links and possible actions on the the user permissions on each of the object (glossaries, terms, and illustrations, as well as comments).
+<p>This is necessary to accommodate more sophisticated publishing workflows where there are several types of users whom have differently privileges on glossaries, terms, and illustrations.
+<p>Expect some fine tuning in this area between the alpha and the final release.
+
+<h3>IX.  Configuration/Parameters</h3>
+
+<p>Before you instanciate a glossary package, you should instanciate a workflow and a general-comments package.  Right now these must be at the same site-mode level and share similar permissions settings.
+
+<h3>X.  Future Improvements/Areas of Likely Change</h3>
+
+<p>Some of these will be added before the final release.
+
+<ul>
+<li>UI support for multiple illustrations for a term</li>
+<li>UI support for associating a glossary with another object</li>
+<li>UI support for setting a glossary owner other than the creating user</li>
+<li>a proc to create a glossary associated with a specific object, available to other packages</li>
+</ul>
+<p>Long range:
+<ul>
+<li>"See Also" functionality based on object relationships</li>
+<li>use of the content-repository's URL to content_item mapping for more informative URLs</li>
+<li>A way to associate a glossary with a static html page, probably by URL</li>
+<li>Create a similar service to the old /gl/<i>term-to-lookup</i></li>
+</ul>
+
+<h3>XI.  Authors</h3>
+
+<ul>
+    <li> System creator: <a href=mailto:walter@arsdigita.com>Walter McGinnis</a> based on a previous system created by <a href=mailto:philg@mit.edu>Philip Greenspun</a> and <a href=mailto:jsc@arsdigita.com>Jin S. Choi</a>
+    <li> System owner: <a href=mailto:walter@arsdigita.com>Walter McGinnis</a>
+    <li> Documentation author: <a href=mailto:walter@arsdigita.com>Walter McGinnis</a>
+</ul>
+
+
+<h3>XII.  Revision History</h3>
+
+<p>
+<i>The revision history table below is for this template - modify it
+as needed for your actual design document.  </i>
+</p>
+
+<table cellpadding=2 cellspacing=2 width=90% bgcolor=#efefef>
+<tr bgcolor=#e0e0e0>
+    <th width=10%>Document Revision #</th>
+    <th width=50%>Action Taken, Notes</th>
+    <th>When?</th>
+    <th>By Whom?</th>
+</tr>
+
+<tr>
+   <td>0.1</td>
+   <td>Creation</td>
+   <td>11/21/2000</td>
+   <td>Walter McGinnis</td>
+</tr>
+</table>
+
+<hr>
+<address><a href=mailto:walter@arsdigita.com>walter@arsdigita.com</a></address>
+</body>
+</html>
