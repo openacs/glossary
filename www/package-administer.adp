@@ -1,6 +1,6 @@
 <master>
 <property name=title>Need to figure out how to get the package title</property>
-<property name="context">@context@</property>
+<property name="context">@context;noquote@</property>
 
 <table border=0 cellpadding=1 cellspacing=0 width="80%">
 <tr><td bgcolor=#aaaaaa>

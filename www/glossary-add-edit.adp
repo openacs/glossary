@@ -1,11 +1,11 @@
 <master>
 <if @new_p@ eq 0>
-<property name=title>@title@</property>
+<property name=title>@title;noquote@</property>
 </if>
 <else>
 <property name=title>Add a Glossary</property>
 </else>
-<property name="context">@context@</property>
+<property name="context">@context;noquote@</property>
 
 <if @new_p@ eq 0 and @glossary_admin_p@ eq 1> 
 <table align=right>

@@ -3,12 +3,12 @@
 <property name=title>Upload Illustration</property>
 </if>
 <else>
-<property name=title>Edit @title@</property>
+<property name=title>Edit @title;noquote@</property>
 </else>
-<property name="context">@context@</property>
+<property name="context">@context;noquote@</property>
 
 <form enctype=multipart/form-data method=POST action="illustration-add-edit-2">
-@export_vars@
+@export_vars;noquote@
 <table>
 <tr>
 <td valign=top align=right>Filename: </td>

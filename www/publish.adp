@@ -1,6 +1,6 @@
 <master>
-<property name=title>Publish @title@?</property>
-<property name="context">@context@</property>
+<property name=title>Publish @title;noquote@?</property>
+<property name="context">@context;noquote@</property>
 
 Really publish <i>@title@</i>?
 <p>

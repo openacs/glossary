@@ -1,7 +1,7 @@
 <master>
 
-<property name=title>Disable @title@?</property>
-<property name="context">@context@</property>
+<property name=title>Disable @title;noquote@?</property>
+<property name="context">@context;noquote@</property>
 
 <p>Really disable <em>@title@</em>?</p>
 <p>

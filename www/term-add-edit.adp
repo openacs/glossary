@@ -1,11 +1,11 @@
 <master>
 <if @new_p@ eq 0>
-<property name=title>@term@</property>
+<property name=title>@term;noquote@</property>
 </if>
 <else>
 <property name=title>Add a New Term</property>
 </else>
-<property name="context">@context@</property>
+<property name="context">@context;noquote@</property>
 
 <if @new_p@ eq 0>
 <table align=right>

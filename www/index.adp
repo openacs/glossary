@@ -1,7 +1,7 @@
 <master>
 
-<property name=title>@package_title@</property>
-<property name="context">@context@</property>
+<property name=title>@package_title;noquote@</property>
+<property name="context">@context;noquote@</property>
 
 <if @admin_p@ eq 1 or @workflow_p@ eq 1> 
 

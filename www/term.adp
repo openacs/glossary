@@ -1,7 +1,7 @@
 <master>
 
-<property name=title>@term@</property>
-<property name="context">@context@</property>
+<property name=title>@term;noquote@</property>
+<property name="context">@context;noquote@</property>
 
 <if @term_modify_p@ eq 1 and @term_create_p@ eq 1> 
 <table align=right>
