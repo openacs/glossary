@@ -67,8 +67,7 @@
            :user_id,
            :peeraddr,
            :context_id,
-           :is_live,
-           'glossary_admin'
+           :is_live
 	 );
 	
       </querytext>
