@@ -14,7 +14,7 @@ ad_page_contract {
     @author Walter McGinnis (walter@arsdigita.com)
     @author Bart Teeuwisse (bart.teeuwisse@7-sisters.com)
     @creation-date 11-21-2000
-    @cvs-id: $Id$
+    @cvs-id $Id$
 } {
     item_id:optional,integer
     glossary_item_id:optional,integer

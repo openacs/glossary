@@ -9,7 +9,7 @@ ad_page_contract {
 
     @author Walter McGinnis (walter@arsdigita.com)
     @creation-date 11-20-2000
-    @cvs-id: $Id$
+    @cvs-id $Id$
 } {
     item_id:optional,integer
     workflow_key:optional

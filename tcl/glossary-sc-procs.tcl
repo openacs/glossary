@@ -1,12 +1,13 @@
 # static-pages/tcl/glossary-sc-procs.tcl
 # implements OpenFTS Search service contracts
-# Don Baccus dhoghaza@pacifier.com
+# Don Baccus (dhoghaza@pacifier.com)
 # poached from static-pages and notes
 
 ad_proc glossary__datasource {
     object_id
 } {
-    @author Don Baccus
+    @author Don Baccus (dhogaza@pacifier.com)
+
 } {
 
     set path_stub [cr_fs_path STATIC_PAGES]
@@ -20,7 +21,8 @@ ad_proc glossary__datasource {
 ad_proc notes__url {
     object_id
 } {
-    @author Don Baccus
+    @author Don Baccus (dhogaza@pacifier.com)
+
 } {
 
     set package_id [apm_package_id_from_key glossary]

@@ -7,8 +7,8 @@ ad_page_contract {
     @param item_id of the glossary
 
     @author Walter McGinnis (walter@arsdigita.com)
-    @creation_date 11-21-2000
-    @cvs-id: $Id$
+    @creation-date 11-21-2000
+    @cvs-id $Id$
 } {
   item_id:integer
 } -properties {  

@@ -5,8 +5,8 @@ ad_page_contract {
     which is based on the glossary module written by Philip Greenspun (philg@mit.edu) and Jin Choi (jsc@arsdigita.com)
 
     @author Walter McGinnis (walter@arsdigita.com)
-    @creation_date 11-20-2000
-    @cvs-id: $Id$
+    @creation-date 11-20-2000
+    @cvs-id $Id$
 } {
 } -properties {  
   glossary_item:multirow

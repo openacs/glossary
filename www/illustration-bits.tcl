@@ -5,7 +5,7 @@ ad_page_contract {
 
     @author walter@arsdigita.com
     @creation-date 11-21-2000
-    @cvs-id $ID:$
+    @cvs-id $Id$
 } {
     revision_id:integer
 }
