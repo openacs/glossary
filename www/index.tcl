@@ -43,7 +43,7 @@ set admin_p [db_string get_admin_p {
 }]
 
 if {$admin_p} {
-    set workflow_p [db_string get_workflow_p {
+    set workflow_p [db_string get_workflow_p_1 {
 	select decode(count(*), 0, 0, 1)
 	from wf_user_tasks t, wf_cases c, cr_items i
 	where t.state in ('enabled','started')
@@ -52,7 +52,7 @@ if {$admin_p} {
 	and t.case_id = c.case_id
     }]
 } else {
-    set workflow_p [db_string get_workflow_p {
+    set workflow_p [db_string get_workflow_p_2 {
 	select decode(count(*), 0, 0, 1)
 	from wf_user_tasks t, wf_cases c, cr_items i
 	where t.user_id = :user_id

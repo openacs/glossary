@@ -82,7 +82,7 @@ if [info exists item_id] {
 	   # note that this is bad because it doesn't ensure that
 	   # text is stored in the db as UTF-8.
 
-	   db_dml image_blob_update {
+	   db_dml image_blob_update_1 {
 	       update cr_revisions
 	       set mime_type = :mime_type,
 	       content = empty_blob()
@@ -92,7 +92,7 @@ if [info exists item_id] {
 	       
 
 	   # update the images with the file details
-	   db_dml set_revision_live {
+	   db_dml set_revision_live_1 {
 	       update images
 	       set width =:original_width,
 	       height = :original_height
@@ -102,7 +102,7 @@ if [info exists item_id] {
 
        # for right now we are setting things live right away
        # later this may be dependant on workflow
-       db_dml set_revision_live {
+       db_dml set_revision_live_2 {
 	   update cr_items
 	   set live_revision = :revision_id,
 	   name = :name,
@@ -187,7 +187,7 @@ if [info exists item_id] {
 	     # note that this is bad because it doesn't ensure that
 	     # text is stored in the db as UTF-8.
 
-	     db_dml image_blob_update {
+	     db_dml image_blob_update_2 {
 		 update cr_revisions
 		 set mime_type = :mime_type,
 		 content = empty_blob()
@@ -196,7 +196,7 @@ if [info exists item_id] {
 	     } -blob_files [list $tmp_filename]
 	    
              # update the images with the file details
-             db_dml set_revision_live {
+             db_dml set_revision_live_3 {
 		 update images
 		 set width =:original_width,
 		 height = :original_height
@@ -213,7 +213,7 @@ if [info exists item_id] {
 	 # for right now we are setting things live right away
 	 # display of illustration is inline with term
 	 # see term-add-edit.tcl for publish status handling
-	 db_dml set_revision_live {
+	 db_dml set_revision_live_4 {
 	     update cr_items
 	     set live_revision = :new_revision_id,
 	     name = :name, 

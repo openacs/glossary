@@ -56,7 +56,7 @@ ad_proc glossary_direct_lookup {} {
 	<i>$term</i>:
 	"
 
-	set definition [db_string definition_display {
+	set definition [db_string definition_display_1 {
 	    select content 
               from cr_revisions
              where title = :term 
@@ -68,7 +68,7 @@ ad_proc glossary_direct_lookup {} {
 	    # Try again, case insensitively.
 
 	    set caseless_term [string tolower $term]
-            set definition [db_string definition_display {
+            set definition [db_string definition_display_2 {
                 select content 
                   from cr_revisions
                  where lower(title) = :caseless_term 

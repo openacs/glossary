@@ -153,6 +153,29 @@ end;
 /
 show errors
 
+-- drop workflows
+
+drop table full_term_publish_proces_cases;
+begin
+  workflow.drop_workflow('full_term_publish_process_wf');
+end;
+/
+show errors
+
+drop table term_submission_process_cases;
+begin
+  workflow.drop_workflow('term_submission_process_wf');
+end;
+/
+show errors
+
+drop table term_go_live_process_cases;
+begin
+  workflow.drop_workflow('term_go_live_wf');
+end;
+/
+show errors
+
 -- finish up
 drop view glossary_terms_latest;
 drop view glossary_terms_live_definition;

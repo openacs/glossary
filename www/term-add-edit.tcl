@@ -71,13 +71,13 @@ if {[info exists item_id]} {
 
 # find out what the workflow is for the parent glossry of this term
 if {[info exists glossary_item_id] && ![empty_string_p $glossary_item_id]} {
-    set glossary_workflow [db_string get_glossary_workflow {
+    set glossary_workflow [db_string get_glossary_workflow_1 {
 	select workflow_key from glossariesx
 	where item_id = :glossary_item_id
 	and revision_id = content_item.get_live_revision(:glossary_item_id)
     }]
 } else {
-    set glossary_workflow [db_string get_glossary_workflow {
+    set glossary_workflow [db_string get_glossary_workflow_2 {
 	select workflow_key 
 	from glossariesx g, cr_child_rels ch
 	where g.item_id = ch.parent_id
@@ -137,7 +137,7 @@ if {[template::form is_request new_term] && [info exists item_id]} {
 					              -value $definition
 
     db_with_handle db {
-        template::query mime_types multilist {
+        template::query get_mime_types mime_types multilist {
             select label, mime_type 
               from cr_mime_types 
           order by label
@@ -188,7 +188,7 @@ if {[template::form is_request new_term] && [info exists item_id]} {
             -datatype text 
 
     db_with_handle db {
-        template::query mime_types multilist {
+        template::query get_mime_types mime_types multilist {
             select label, mime_type 
               from cr_mime_types 
           order by label
@@ -246,7 +246,7 @@ if [template::form is_valid new_term] {
 	    }
 
 	    if {![empty_string_p $definition]} {
-		db_dml term_definition_update {
+		db_dml term_definition_update_1 {
 		    update cr_revisions
 		    set content = empty_blob()
 		    where revision_id = :revision_id
@@ -254,7 +254,7 @@ if [template::form is_valid new_term] {
 		} -blobs [list $definition]
 	    }
 
-	    db_dml set_revision_live {
+	    db_dml set_revision_live_1 {
 	        update cr_items
 		set live_revision = :revision_id,
 		name = :name,
@@ -278,7 +278,7 @@ if [template::form is_valid new_term] {
 		end;
 	    }]
 
-	   set new_revision_id [db_exec_plsql term_new_content_revision {
+	   set new_revision_id [db_exec_plsql term_new_content_revision_1 {
 	       begin
 	       :1 := content_revision.new(
 	       item_id => :new_item_id,
@@ -298,7 +298,7 @@ if [template::form is_valid new_term] {
 	    }
 	      
 	    if {![empty_string_p $definition]} {
-		db_dml term_definition_update {
+		db_dml term_definition_update_2 {
 		    update cr_revisions
 		    set content = empty_blob()
 		    where revision_id = :new_revision_id
@@ -306,7 +306,7 @@ if [template::form is_valid new_term] {
 		} -blobs [list $definition]
 	    }
 
-	    db_dml set_revision_live {
+	    db_dml set_revision_live_2 {
 	        update cr_items
 		set live_revision = :new_revision_id,
 		name = :name, 
@@ -315,7 +315,7 @@ if [template::form is_valid new_term] {
 	    }
 
 	    # we associate the term with its parent glossary	    
-	    set rel_id [db_exec_plsql term_new_content_revision {
+	    set rel_id [db_exec_plsql term_new_content_revision_2 {
 		begin
 		:1 := acs_object.new(
 		object_type	=> 'cr_item_child_rel',
