@@ -24,10 +24,10 @@
       
 		insert into glossary_termsi (
 		item_id, revision_id, title, context_id, 
-		creation_user, creation_ip
+		creation_user, creation_ip, mime_type
 		) values (
 		:item_id, :revision_id, 
-		:term, :glossary_item_id, :user_id, :peeraddr
+		:term, :glossary_item_id, :user_id, :peeraddr, :mime_type
 		)
 	    
       </querytext>

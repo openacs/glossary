@@ -33,7 +33,7 @@
     select s1.name
     from site_nodes s1, site_nodes s2, apm_packages p
     where package_key = 'acs-workflow'
-    and s1.object_id = package_id
+    and s1.object_id = :package_id
     and s1.parent_id = s2.parent_id
     and s2.node_id = :node_id
 
