@@ -24,6 +24,15 @@
       </querytext>
 </fullquery>
 
+<fullquery name="image_blob_size_1">      
+      <querytext>
+
+         update cr_revisions
+         set content_length = dbms_lob.getlength(content)
+         where revision_id = :revision_id
+
+      </querytext>
+</fullquery>
  
 <fullquery name="new_term_illustration_item">      
       <querytext>
@@ -42,7 +51,7 @@
 </fullquery>
 
  
-<fullquery name="term_new_content_revision">      
+<fullquery name="term_new_content_revision_1">      
       <querytext>
       
 	    begin
@@ -71,19 +80,27 @@
       </querytext>
 </fullquery>
 
+<fullquery name="image_blob_size_2">      
+      <querytext>
+
+         update cr_revisions
+         set content_length = dbms_lob.getlength(content)
+         where revision_id = :new_revision_id
+
+      </querytext>
+</fullquery>
  
-<fullquery name="term_new_content_revision">      
+
+ 
+<fullquery name="term_new_content_revision_2">      
       <querytext>
       
-	    begin
-	    :1 := content_revision.new(
-	    item_id => :new_item_id,
-	    title => :title,
-	    description => :description,
-	    creation_user => :user_id,
-	    creation_ip => :peeraddr
-	    );
-	    end;
+         begin
+           :1 := acs_object.new(
+                   object_type => 'cr_item_child_rel',
+                   context_id  => :term_item_id
+                 );
+         end;
 	
       </querytext>
 </fullquery>

@@ -5,9 +5,11 @@
 
 <fullquery name="output_illustration">      
       <querytext>
-      select content
-from cr_revisions
-where revision_id = :revision_id
+
+      select r.content, i.storage_type
+      from cr_revisions r, cr_items i
+      where revision_id = $revision_id and i.item_id = r.item_id
+
       </querytext>
 </fullquery>
 

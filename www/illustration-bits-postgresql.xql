@@ -5,10 +5,12 @@
 
 <fullquery name="output_illustration">      
       <querytext>
-      FIX ME LOB
-select content
-from cr_revisions
-where revision_id = :revision_id
+
+	select r.lob as content, i.storage_type
+        from   cr_revisions r, cr_items i
+	where r.item_id = i.item_id
+	and   r.revision_id = :revision_id
+
       </querytext>
 </fullquery>
 

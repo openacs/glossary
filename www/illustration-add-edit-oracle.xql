@@ -7,9 +7,8 @@
       <querytext>
       
 	select title, description, name
-	from imagesx im, cr_items i
-	where im.item_id = :item_id
-	and im.item_id = i.item_id
+	from imagesx
+	where item_id = :item_id
 	and revision_id = content_item.get_latest_revision(:item_id)
     
       </querytext>

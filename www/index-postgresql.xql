@@ -6,7 +6,7 @@
 <fullquery name="get_workflow_p_2">      
       <querytext>
       
-	select case count(*) = 0 then 0 else 1 end
+	select case when count(*) = 0 then 0 else 1 end
 	from wf_user_tasks t, wf_cases c, cr_items i
 	where t.user_id = :user_id
 	and t.state in ('enabled','started')

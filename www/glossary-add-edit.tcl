@@ -211,9 +211,9 @@ if [template::form is_valid new_glossary] {
 
 	db_dml glossary_update {
 	    insert into glossariesi (
-	    item_id, revision_id, title, description, context_id, creation_user, creation_ip
+	    item_id, revision_id, title, description, context_id, creation_user, creation_ip, workflow_key
 	    ) values (
-	    :item_id, :revision_id, :title, :description, :context_id, :user_id, :peeraddr
+	    :item_id, :revision_id, :title, :description, :context_id, :user_id, :peeraddr, :workflow_key
 	    )
 	}
 	# for right now we are setting things live right away

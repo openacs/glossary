@@ -93,16 +93,16 @@ set context_bar [ad_context_bar [list "glossary?item_id=$glossary_item_id" $glos
 
 set term_create_p [ad_permission_p $glossary_item_id glossary_term_create]
 
-set return_url [ad_conn url]
+set return_url "[ad_conn url]?item_id=$item_id&glossary_item_id=$glossary_item_id"
 
 if [ad_permission_p $item_id glossary_term_comment_on] {
-    set comment_link [general_comments::create_link $item_id $term $return_url "comment on $term"]
+    set comment_link [general_comments_create_link -object_name $term -link_text "comment on $term" $item_id $return_url]
 } else {
     set comment_link ""
 }
 
 if [ad_permission_p $item_id glossary_term_comment_read] {
-    set comments [general_comments::get_comments $item_id $return_url]
+    set comments [general_comments_get_comments -print_content_p 1 $item_id $return_url]
 } else {
     set comments ""
 }

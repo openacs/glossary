@@ -89,7 +89,8 @@ if [info exists item_id] {
 	       where revision_id = :revision_id
 	       returning content into :1
 	   } -blob_files [list $tmp_filename]
-	       
+ 
+           db_dml image_blob_size_1 ""
 
 	   # update the images with the file details
 	   db_dml set_revision_live_1 {
@@ -125,7 +126,7 @@ if [info exists item_id] {
 	    end;
 	}]
 	    
-        set new_revision_id [db_exec_plsql term_new_content_revision {
+        set new_revision_id [db_exec_plsql term_new_content_revision_1 {
 	    begin
 	    :1 := content_revision.new(
 	    item_id => :new_item_id,
@@ -194,6 +195,8 @@ if [info exists item_id] {
 		 where revision_id = :new_revision_id
 		 returning content into :1
 	     } -blob_files [list $tmp_filename]
+ 
+             db_dml image_blob_size_2 ""
 	    
              # update the images with the file details
              db_dml set_revision_live_3 {
@@ -223,7 +226,7 @@ if [info exists item_id] {
 
 	 # finally we associate the image with its parent term
 	 # i.e. make it an illustration of the term
-	 set rel_id [db_exec_plsql term_new_content_revision {
+	 set rel_id [db_exec_plsql term_new_content_revision_2 {
 	     begin
 	     :1 := acs_object.new(
 	     object_type	=> 'cr_item_child_rel',

@@ -11,87 +11,107 @@
       </querytext>
 </fullquery>
 
- 
 <fullquery name="image_blob_update_1">      
       <querytext>
-      FIX ME LOB
 
 	       update cr_revisions
 	       set mime_type = :mime_type,
-	       content = empty_blob()
+ 	       lob = [set __lob_id [db_string get_lob_id "select empty_lob()"]]
 	       where revision_id = :revision_id
-	       returning content into :1
 	   
+      </querytext>
+</fullquery>
+ 
+<fullquery name="image_blob_size_1">      
+      <querytext>
+
+         update cr_revisions
+         set content_length = lob_length(lob)
+         where revision_id = :revision_id
+
       </querytext>
 </fullquery>
 
  
 <fullquery name="new_term_illustration_item">      
       <querytext>
-      FIX ME PLSQL
-FIX ME PLSQL
 
-	    begin
-	    :1 := content_item__new (
-	    name => :name,
-	    content_type => 'image',
-	    context_id => :term_item_id,
-	    creation_user => :user_id,
-	    creation_ip => :peeraddr
-	    );
-	    end;
+        select content_item__new (
+		:name,
+                NULL,
+                NULL,
+                NULL,
+                current_timestamp,
+                :user_id,
+                :term_item_id,
+                :peeraddr,
+                'content_item',
+                'image',
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                NULL
+        );
 	
       </querytext>
 </fullquery>
 
  
-<fullquery name="term_new_content_revision">      
+<fullquery name="term_new_content_revision_1">      
       <querytext>
-      FIX ME PLSQL
-FIX ME PLSQL
 
-	    begin
-	    :1 := content_revision__new(
-	    item_id => :new_item_id,
-	    title => :title,
-	    description => :description,
-	    creation_user => :user_id,
-	    creation_ip => :peeraddr
-	    );
-	    end;
-	
+           select content_revision__new(
+               :title,
+               :description,
+               current_timestamp,
+               NULL,
+               NULL,
+               NULL,
+               :new_item_id,
+               NULL,
+               current_timestamp,
+               :user_id,
+               :peeraddr
+           );
+
       </querytext>
 </fullquery>
 
  
 <fullquery name="image_blob_update_2">      
       <querytext>
-      FIX ME LOB
 
 		 update cr_revisions
 		 set mime_type = :mime_type,
-		 content = empty_blob()
+ 	         lob = [set __lob_id [db_string get_lob_id "select empty_lob()"]]
 		 where revision_id = :new_revision_id
-		 returning content into :1
 	   
+      </querytext>
+</fullquery>
+ 
+<fullquery name="image_blob_size_2">      
+      <querytext>
+
+         update cr_revisions
+         set content_length = lob_length(lob)
+         where revision_id = :new_revision_id
+
       </querytext>
 </fullquery>
 
  
-<fullquery name="term_new_content_revision">      
+<fullquery name="term_new_content_revision_2">      
       <querytext>
-      FIX ME PLSQL
-FIX ME PLSQL
 
-	    begin
-	    :1 := content_revision__new(
-	    item_id => :new_item_id,
-	    title => :title,
-	    description => :description,
-	    creation_user => :user_id,
-	    creation_ip => :peeraddr
-	    );
-	    end;
+         select acs_object__new(
+            NULL,
+            'cr_item_child_rel',
+            current_timestamp,
+            NULL,
+            NULL,
+            :term_item_id
+	 );
 	
       </querytext>
 </fullquery>

@@ -3,6 +3,20 @@
 <queryset>
    <rdbms><type>postgresql</type><version>7.1</version></rdbms>
 
+<fullquery name="glossary_workflow_info">      
+      <querytext>
+
+	select g.workflow_key, wf.description as workflow_description, pretty_name as workflow_name
+	from glossariesx g, wf_workflows wf, acs_object_types ot
+	where g.workflow_key = wf.workflow_key
+	and wf.workflow_key = ot.object_type
+	and g.item_id = :item_id
+        and g.revision_id = content_item__get_live_revision(:item_id);
+    
+      </querytext>
+</fullquery>
+
+
 <fullquery name="get_pending_terms_p">      
       <querytext>
       

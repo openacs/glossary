@@ -4,7 +4,7 @@
 <fullquery name="get_mime_types">
     <querytext>
             select label, mime_type 
-              from cr_mime_types 
+              from cr_text_mime_types 
           order by label
     </querytext>
 </fullquery>

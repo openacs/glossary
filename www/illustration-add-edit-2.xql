@@ -5,7 +5,7 @@
       <querytext>
       
 	   insert into imagesi (
-	   item_id, revision_id, title, desciption, context_id, 
+	   item_id, revision_id, title, description, context_id, 
 	   creation_user, creation_ip
 	   ) values (
 	   :item_id, :revision_id,:title, :description,

@@ -6,10 +6,11 @@
 <fullquery name="get_glossary_workflow_1">      
       <querytext>
       
-	select workflow_key from glossariesx
-	where item_id = :glossary_item_id
-	and revision_id = content_item.get_live_revision(:glossary_item_id)
-    
+	select workflow_key 
+	from glossariesx 
+	where item_id = :glossary_item_id and
+          revision_id = content_item.get_live_revision(:glossary_item_id)
+
       </querytext>
 </fullquery>
 
@@ -85,20 +86,21 @@
 <fullquery name="term_new_content_revision_1">      
       <querytext>
       
-	       begin
-	       :1 := content_revision.new(
-	       item_id => :new_item_id,
-	       title => :term,
-	       creation_user => :user_id,
-	       creation_ip => :peeraddr
-	       );
-		end;
+        begin
+          :1 := content_revision.new(
+                  item_id => :new_item_id,
+                  title => :term,
+                  mime_type => :mime_type,
+                  creation_user => :user_id,
+                  creation_ip => :peeraddr
+                );
+        end;
 	    
       </querytext>
 </fullquery>
 
  
-<fullquery name="term_definition_update_1">      
+<fullquery name="term_definition_update_2">      
       <querytext>
       
 		    update cr_revisions

@@ -14,7 +14,7 @@
 </fullquery>
 
  
-<fullquery name="get_glossary_workflow_1">      
+<fullquery name="get_glossary_workflow_2">      
       <querytext>
 
 	select workflow_key 
@@ -33,7 +33,7 @@
 	select term, definition, publish_status,
 	live_revision, latest_revision, name, mime_type,
 	case acs_permission__permission_p(item_id, :user_id, 'glossary_term_add_illustration')
-	  when 't' then 1,
+	  when 't' then 1
 	  when 'f' then 0
         end as illustration_add_p
 	from glossary_terms_latest
@@ -54,12 +54,10 @@
  
 <fullquery name="term_definition_update_1">      
       <querytext>
-      FIX ME LOB
 
-		    update cr_revisions
-		    set content = empty_blob()
-		    where revision_id = :revision_id
-		    returning content into :1
+         update cr_revisions
+         set content = :definition
+         where revision_id = :revision_id
 		
       </querytext>
 </fullquery>
@@ -81,7 +79,7 @@
                 'glossary_term',
                 NULL,
                 NULL,
-                'text/plain',
+                NULL,
                 NULL,
                 NULL
         );
@@ -97,7 +95,7 @@
                :term,
                NULL,
                current_timestamp,
-               'text/plain',
+               :mime_type,
                NULL,
                NULL,
                :new_item_id,
@@ -113,12 +111,10 @@
  
 <fullquery name="term_definition_update_2">      
       <querytext>
-      FIX ME LOB
 
-		    update cr_revisions
-		    set content = empty_blob()
-		    where revision_id = :new_revision_id
-		    returning content into :1
+         update cr_revisions
+         set content = :definition
+         where revision_id = :new_revision_id
 		
       </querytext>
 </fullquery>

@@ -69,7 +69,7 @@ if {[info exists item_id]} {
     set new_p 1
 }
 
-# find out what the workflow is for the parent glossry of this term
+# find out what the workflow is for the parent glossary of this term
 if {[info exists glossary_item_id] && ![empty_string_p $glossary_item_id]} {
     set glossary_workflow [db_string get_glossary_workflow_1 {
 	select workflow_key from glossariesx
@@ -139,7 +139,7 @@ if {[template::form is_request new_term] && [info exists item_id]} {
     db_with_handle db {
         template::query get_mime_types mime_types multilist {
             select label, mime_type 
-              from cr_mime_types 
+              from cr_text_mime_types 
           order by label
         } -db $db
     }
@@ -190,7 +190,7 @@ if {[template::form is_request new_term] && [info exists item_id]} {
     db_with_handle db {
         template::query get_mime_types mime_types multilist {
             select label, mime_type 
-              from cr_mime_types 
+              from cr_text_mime_types 
           order by label
         } -db $db
    }
