@@ -45,7 +45,7 @@
 <b>Definition</b>:
 <p>
 <blockquote>
-@definition@
+@html_definition@
 </blockquote>
 <p>
 

@@ -19,7 +19,7 @@ ad_page_contract {
     glossary_item_id:optional,integer
     term:optional,trim
     name:optional,trim
-    definition:optional,trim
+    definition:html,optional,trim
     mime_type:optional
     publish_status:optional
 } -properties {  
@@ -136,18 +136,10 @@ if {[template::form is_request new_term] && [info exists item_id]} {
 	                                              -datatype text \
 					              -value $definition
 
-    db_with_handle db {
-        template::query get_mime_types mime_types multilist {
-            select label, mime_type 
-              from cr_text_mime_types 
-          order by label
-        } -db $db
-    }
-   
     template::element create new_term mime_type \
             -datatype text \
             -widget select \
-            -options $mime_types \
+            -options [list [list "Plain text" "text/plain"] [list "HTML" "text/html"]]  \
             -values $mime_type
     
     set publish_states [glossary_publish_states]
@@ -187,19 +179,10 @@ if {[template::form is_request new_term] && [info exists item_id]} {
             -widget textarea \
             -datatype text 
 
-    db_with_handle db {
-        template::query get_mime_types mime_types multilist {
-            select label, mime_type 
-              from cr_text_mime_types 
-          order by label
-        } -db $db
-   }
-
-
    template::element create new_term mime_type \
            -datatype text \
            -widget select \
-           -options $mime_types  \
+           -options [list [list "Plain text" "text/plain"] [list "HTML" "text/html"]]  \
            -values "text/plain"
 
     switch $glossary_workflow {
@@ -225,6 +208,7 @@ if {[template::form is_request new_term] && [info exists item_id]} {
 }
 
 if [template::form is_valid new_term] {
+
      set peeraddr [ad_conn peeraddr]
 
     # context_id is the parent  glossary_item_id
@@ -238,10 +222,10 @@ if [template::form is_valid new_term] {
 	    db_dml term_update {
 		insert into glossary_termsi (
 		item_id, revision_id, title, context_id, 
-		creation_user, creation_ip
+		creation_user, creation_ip, mime_type
 		) values (
 		:item_id, :revision_id, 
-		:term, :glossary_item_id, :user_id, :peeraddr
+		:term, :glossary_item_id, :user_id, :peeraddr, :mime_type
 		)
 	    }
 

@@ -84,6 +84,8 @@ db_0or1row glossary_term_item_select {
     where item_id = :item_id
 }
 
+set html_definition [ad_html_text_convert -from $mime_type $definition]
+
 set glossary_title [db_string get_glossary_title "
 select title from glossariesx
 where revision_id = content_item.get_live_revision(:glossary_item_id)

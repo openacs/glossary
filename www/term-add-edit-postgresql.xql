@@ -67,7 +67,7 @@
       <querytext>
 
         select content_item__new (
-		:name,
+		varchar :name,
                 NULL,
                 NULL,
                 NULL,
