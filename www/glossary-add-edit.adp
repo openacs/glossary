@@ -33,7 +33,7 @@ Glossary</a>
 
 <if @new_p@ eq 0>
 <p>
-Worflow Policy: 
+Workflow Policy: 
 
  <if @workflow_key@ nil>
   <a href=workflow-add-edit?item_id=@item_id@>Not defined, Please set</a>
