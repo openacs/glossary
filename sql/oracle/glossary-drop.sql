@@ -86,7 +86,7 @@ begin
   loop
     fetch terms_drop into object_id;
     exit when terms_drop%NOTFOUND;
-    content_item.delete( item_id => object_id);
+    content_item.del( item_id => object_id);
   end loop;
 commit;
 end;
@@ -117,7 +117,7 @@ begin
   loop
     fetch glossaries_drop into object_id;
     exit when glossaries_drop%NOTFOUND;
-    content_item.delete( item_id => object_id);
+    content_item.del( item_id => object_id);
   end loop;
 commit;
 end;
