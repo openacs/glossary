@@ -350,7 +350,7 @@ show errors
 
 
 declare
-    v_attribute_id integer;
+    v_attribute_id number;
 begin
     v_attribute_id := workflow.create_attribute(
         workflow_key => 'publishing_wf',

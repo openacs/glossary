@@ -356,7 +356,7 @@ show errors
 
 
 declare
-    v_attribute_id integer;
+    v_attribute_id number;
 begin
     v_attribute_id := workflow.create_attribute(
         workflow_key => 'full_term_publish_process_wf',
@@ -381,7 +381,7 @@ end;
 show errors
         
 declare
-    v_attribute_id integer;
+    v_attribute_id number;
 begin
     v_attribute_id := workflow.create_attribute(
         workflow_key => 'full_term_publish_process_wf',
