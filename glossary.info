@@ -13,15 +13,17 @@
         <database>postgresql</database>
     </database-support>
         <owner url="mailto:dennis@arsdigita.com">Dennis Gregorovic</owner>
-        <summary>Users can create glossaries which contain terms and their definitions.</summary>
+        <summary>User maintained glossary.</summary>
         <release-date>2001-02-06</release-date>
         <vendor url="http://www.arsdigita.com/">ArsDigita Corporation</vendor>
-        <description format="text/plain">The Glossary Package is based on the ACS 3.x glossary module which was simply a repository for a site's terms and their definitions. 
-
-In the process of migrating the glossary to an ACS 4.0 package, we will expand it's feature set to support multiple contexts. A site, subsite, group, user, or
-even document (a this point the document must exist in the database as an ACS object) may have one or more glossaries associated with it. Terms may
-have illustrations (acs-content-repository). Each glossary can have its security set (acs-permissions), a workflow, and optionally except user comments. A
-glossary's content will be stored in the content repository and its presentation will use the ArsDigita Templating System (ATS). </description>
+        <description format="text/plain">
+        The glossary package supports glossaries for multiple
+        contexts. A site, subsite, group, user, or even a document
+        may have one or more glossaries associated with it. Terms may have
+        illustrations (acs-content-repository). Each glossary can have its
+        security set (acs-permissions), a workflow, and optionally except user
+        comments. A glossary's content is stored in the content repository.  Relies on the deprecated acs-workflow module.
+        </description>
 
         <requires url="acs-content-repository" version="4.0"/>
         <requires url="acs-kernel" version="4.6.2"/>
