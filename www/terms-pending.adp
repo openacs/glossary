@@ -22,9 +22,9 @@
 
 <!-- not divided by letter at this point -->
 
-<table border=0 cellpadding=1 cellspacing=0 width=80%>
+<table border=0 cellpadding=1 cellspacing=0 width="80%">
 <tr><td bgcolor=#aaaaaa>
-<table border=0 cellpadding=3 cellspacing=0 width=100%>
+<table border=0 cellpadding=3 cellspacing=0 width="100%">
   <tr bgcolor=#ffffff>
   <td>Term</td>
   <td colspan=2>Status</td>
