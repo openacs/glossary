@@ -12,7 +12,7 @@ ad_page_contract {
 } -properties {  
     term:onevalue
     definition:onevalue
-    context_bar:onevalue
+    context:onevalue
     term_modify_p:onevalue
     term_create_p:onevalue
     illustration_exists_p:onevalue
@@ -91,7 +91,7 @@ select title from glossariesx
 where revision_id = content_item.get_live_revision(:glossary_item_id)
 "]
 
-set context_bar [ad_context_bar [list "glossary?item_id=$glossary_item_id" $glossary_title] $term]
+set context [list [list "glossary?item_id=$glossary_item_id" $glossary_title] $term]
 
 set term_create_p [ad_permission_p $glossary_item_id glossary_term_create]
 

@@ -1,12 +1,7 @@
 <master>
 
 <property name=title>@package_title@</property>
-
-<h2>@package_title@</h2>
-
-@context_bar@
-
-<hr>
+<property name="context">@context@</property>
 
 <if @admin_p@ eq 1 or @workflow_p@ eq 1> 
 

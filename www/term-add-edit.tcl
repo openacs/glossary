@@ -23,7 +23,7 @@ ad_page_contract {
     mime_type:optional
     publish_status:optional
 } -properties {  
-    context_bar:onevalue
+    context:onevalue
     illustration_exists_p:onevalue
     illustration_link_url:onevalue
     illustration_add_p:onevalue
@@ -55,7 +55,7 @@ if {[info exists item_id]} {
 	set illustration_exists_p 0
     }
     
-    set context_bar [ad_context_bar "Edit Term"]
+    set context [list "Edit Term"]
 
 } else {
     ad_require_permission $glossary_item_id glossary_term_create
@@ -64,7 +64,7 @@ if {[info exists item_id]} {
 
     set illustration_exists_p 0
 
-    set context_bar [ad_context_bar "New Term"]
+    set context [list "New Term"]
 
     set new_p 1
 }

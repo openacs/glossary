@@ -17,7 +17,7 @@ ad_page_contract {
   glossary_edit_p:onevalue
   glossary_status:onevalue
   glossary_term_item:multirow
-  context_bar:onevalue
+  context:onevalue
   term_create_p:onevalue
 } 
 
@@ -43,7 +43,7 @@ db_1row glossary_item_select {
     and i.live_revision = g.revision_id
 }
 
-set context_bar [ad_context_bar $glossary_title]
+set context [list $glossary_title]
 
 set term_create_p [ad_permission_p $glossary_item_id glossary_term_create]
 

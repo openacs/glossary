@@ -1,5 +1,3 @@
-<!-- glossary/www/term-add-edit.adp -->
-
 <master>
 <if @new_p@ eq 0>
 <property name=title>@term@</property>
@@ -7,9 +5,7 @@
 <else>
 <property name=title>Add a New Term</property>
 </else>
-@context_bar@
-
-<hr>
+<property name="context">@context@</property>
 
 <if @new_p@ eq 0>
 <table align=right>

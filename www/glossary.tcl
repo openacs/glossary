@@ -17,7 +17,7 @@ ad_page_contract {
   glossary_item_id:onevalue
   glossary_edit_p:onevalue
   glossary_term_item:multirow
-  context_bar:onevalue
+  context:onevalue
   term_create_p:onevalue
 } 
 
@@ -50,7 +50,7 @@ if ![db_0or1row glossary_item_select {
     ad_script_abort
 }
 
-set context_bar [ad_context_bar $glossary_title]
+set context [list $glossary_title]
 
 set term_create_p [ad_permission_p $glossary_item_id glossary_term_create]
 

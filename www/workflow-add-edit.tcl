@@ -24,7 +24,7 @@ set user_id [ad_conn user_id]
 
 ad_require_permission $item_id glossary_modify
 
-set context_bar [ad_context_bar "Set Workflow"]
+set context [list "Set Workflow"]
 
 if {[info exists workflow_key]} {
     set new_p 0

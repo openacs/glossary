@@ -1,19 +1,12 @@
-<!-- glossary/www/glossary-add-edit.adp -->
-
 <master>
-
 <if @new_p@ eq 0>
 <property name=title>@title@</property>
-<h2>@title@</h2>
 </if>
 <else>
 <property name=title>Add a Glossary</property>
-<h2>Add a Glossary</h2>
 </else>
+<property name="context">@context@</property>
 
-@context_bar@
-
-<hr>
 <if @new_p@ eq 0 and @glossary_admin_p@ eq 1> 
 <table align=right>
 <tr>

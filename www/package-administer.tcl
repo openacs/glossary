@@ -10,7 +10,7 @@ ad_page_contract {
 } {
 } -properties {  
   glossary_item:multirow
-  context_bar:onevalue
+  context:onevalue
   create_p:onevalue
 } 
 
@@ -18,7 +18,7 @@ set package_id [ad_conn package_id]
 
 set user_id [ad_conn user_id]
 
-set context_bar [ad_context_bar "Administration"]
+set context [list "Administration"]
 
 ad_require_permission $package_id read
 

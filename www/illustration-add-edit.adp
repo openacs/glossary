@@ -1,28 +1,12 @@
-<!-- glossary/www/illustration-add-edit.adp -->
-
 <master>
-
 <if @title@ nil>
 <property name=title>Upload Illustration</property>
 </if>
 <else>
 <property name=title>Edit @title@</property>
 </else>
+<property name="context">@context@</property>
 
-<if @title@ nil>
-<h2>Upload Illustration</h2>
-</if>
-<else>
-<h2>Edit @title@</h2>
-</else>
-
-@context_bar@
-
-<hr>
-
-<p>
-
-<blockquote>
 <form enctype=multipart/form-data method=POST action="illustration-add-edit-2">
 @export_vars@
 <table>
@@ -66,6 +50,5 @@
 <input type=submit value="Edit Illustration">
 </else>
 </center>
-</blockquote>
-</form>
+
 

@@ -18,7 +18,7 @@ ad_page_contract {
     name:optional,trim
     description:optional,trim
 } -properties {
-    context_bar:onevalue
+    context:onevalue
     title:onevalue
     descritpion:onevalue
     name:onevalue
@@ -33,7 +33,7 @@ set user_id [ad_conn user_id]
 if {[info exists item_id]} {
     ad_require_permission $item_id glossary_term_modify_illustration
 
-    set context_bar [ad_context_bar "Edit Illustration"]
+    set context [list "Edit Illustration"]
     db_1row illustration_select {
 	select title, description, name
 	from imagesx im, cr_items i
@@ -46,7 +46,7 @@ if {[info exists item_id]} {
 } else {
     ad_require_permission $term_item_id glossary_term_add_illustration
     
-    set context_bar [ad_context_bar "Upload Illustration"]
+    set context [list "Upload Illustration"]
     
     set title ""
     set description ""

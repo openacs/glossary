@@ -1,11 +1,6 @@
 <master>
 <property name=title>@glossary_title@</property>
-<!-- glossary info -->
-<h3>@glossary_title@</h3>
-
-@context_bar@
-
-<hr>
+<property name="context">@context@</property>
 
 <if @glossary_edit_p@ eq 1>
  <table align=right><tr><td>[<a href=glossary-add-edit?item_id=@glossary_item_id@>Edit Glossary</a>]</td></tr></table>

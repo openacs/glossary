@@ -13,7 +13,7 @@ ad_page_contract {
   item_id:integer
 } -properties {  
   title:onevalue
-  context_bar:onevalue
+  context:onevalue
 } 
 
 ad_require_permission $item_id glossary_admin
@@ -24,7 +24,7 @@ set title [db_string get_item_title {
     where item_id = :item_id 
     and revision_id = content_item.get_live_revision(:item_id)}]
     
-set context_bar [ad_context_bar "Disable <i>$title</i>?"]
+set context [list "Disable <i>$title</i>?"]
 
 template::form create disable_item
 

@@ -11,7 +11,7 @@ ad_page_contract {
   item_id:integer
 } -properties {  
   title:onevalue
-  context_bar:onevalue
+  context:onevalue
 } 
 
 ad_require_permission $item_id glossary_admin
@@ -24,7 +24,7 @@ db_1row get_item_title_and_revision_id {
 }
     
 
-set context_bar [ad_context_bar "Publish <i>$title</i>?"]
+set context [list "Publish <i>$title</i>?"]
 
 template::form create publish_item
 

@@ -25,7 +25,7 @@ ad_page_contract {
     description:optional,trim
     owner_id:integer,optional
 } -properties {  
-    context_bar:onevalue
+    context:onevalue
     new_p:onevalue
     permissions_link:onevalue
     live_p:onevalue
@@ -61,7 +61,7 @@ if {[info exists item_id]} {
     # this is an existing glossary
     ad_require_permission $item_id glossary_modify
     
-    set context_bar [ad_context_bar "Edit Glossary"]
+    set context [list "Edit Glossary"]
     
     set new_p 0
     
@@ -94,7 +94,7 @@ if {[info exists item_id]} {
     # this will be a new glossary
     ad_require_permission $package_id glossary_create
     
-    set context_bar [ad_context_bar "New Glossary"]
+    set context [list "New Glossary"]
 
     set new_p 1
 

@@ -1,18 +1,6 @@
 <master>
-
 <property name=title>Need to figure out how to get the package title</property>
-
-<h2>Package or Application title</h2>
-
-@context_bar@
-
-<hr>
-
-
-<p>&nbsp;
-<p>
-
-<center>
+<property name="context">@context@</property>
 
 <table border=0 cellpadding=1 cellspacing=0 width="80%">
 <tr><td bgcolor=#aaaaaa>
@@ -69,5 +57,3 @@ id=glossary_item.owner_id
 </table>
 </td>
 </table>
-
-</center>

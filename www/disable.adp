@@ -1,12 +1,9 @@
 <master>
 
 <property name=title>Disable @title@?</property>
+<property name="context">@context@</property>
 
-<h1>Disable <i>@title@</i>?</h1>
-@context_bar@
-
-<hr>
-
-Really disable <i>@title@</i>?
+<p>Really disable <em>@title@</em>?</p>
 <p>
 <formtemplate id="disable_item"></formtemplate>
+</p>

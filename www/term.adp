@@ -1,14 +1,7 @@
 <master>
 
 <property name=title>@term@</property>
-
-<!-- term info -->
-<h3>@term@</h3>
-
-@context_bar@
-
-<hr>
-
+<property name="context">@context@</property>
 
 <if @term_modify_p@ eq 1 and @term_create_p@ eq 1> 
 <table align=right>
