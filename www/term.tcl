@@ -65,7 +65,7 @@ if ![db_0or1row get_live_p_and_glossary_item_id {
     and ch.parent_id = item_id
     and live_revision is not null}] {
     
-    # this should be changed to something more approriate to a templated system
+    # this should be changed to something more appropriate to a templated system
     ad_return_complaint 1 "This glossary is no longer available"
     ad_script_abort
 }
