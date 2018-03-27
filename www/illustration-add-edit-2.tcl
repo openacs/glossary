@@ -102,7 +102,7 @@ if [info exists item_id] {
        }
 
        # for right now we are setting things live right away
-       # later this may be dependant on workflow
+       # later this may be dependent on workflow
        db_dml set_revision_live_2 {
 	   update cr_items
 	   set live_revision = :revision_id,

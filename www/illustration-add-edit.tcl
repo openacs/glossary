@@ -20,7 +20,7 @@ ad_page_contract {
 } -properties {
     context:onevalue
     title:onevalue
-    descritpion:onevalue
+    description:onevalue
     name:onevalue
     export_vars:onevalue
     new_p:onevalue
