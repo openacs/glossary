@@ -217,7 +217,7 @@ if [template::form is_valid new_glossary] {
 	}
 	# for right now we are setting things live right away
 	# we should change this to take its value from the publish_status 
-	# form element, which doens't exist right now
+	# form element, which doesn't exist right now
 	# see template-add-edit for code to grab
 	db_dml set_revision_live {
 	    update cr_items
