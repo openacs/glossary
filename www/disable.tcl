@@ -1,4 +1,4 @@
-# glossary/www/disble.tcl
+# glossary/www/disable.tcl
 
 ad_page_contract {
     all of this information is for the ACS 4 Glossary Package
