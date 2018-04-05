@@ -58,8 +58,8 @@ drop function inline_0 ();
 
     select workflow__add_place(
         'full_term_publish_process_wf',
-        'before_edit_definiton', 
-        'Ready to Edit Definiton', 
+        'before_edit_definition', 
+        'Ready to Edit Definition', 
         2
     );
 
@@ -126,8 +126,8 @@ drop function inline_0 ();
 
 	select workflow__add_role (
          'full_term_publish_process_wf',
-         'edit_definiton',
-         'Edit Definiton',
+         'edit_definition',
+         'Edit Definition',
          2
     );
 
@@ -152,9 +152,9 @@ drop function inline_0 ();
 
 	select workflow__add_transition (
          'full_term_publish_process_wf',
-         'edit_definiton',
-         'Edit Definiton',
-         'edit_definiton',
+         'edit_definition',
+         'Edit Definition',
+         'edit_definition',
          2,
          'user'
 	);
@@ -228,7 +228,7 @@ drop function inline_0 ();
 	select workflow__add_arc (
          'full_term_publish_process_wf',
          'approve_new_term',
-         'before_edit_definiton',
+         'before_edit_definition',
          'out',
          '#',
          '',
@@ -252,7 +252,7 @@ drop function inline_0 ();
 	select workflow__add_arc (
          'full_term_publish_process_wf',
          'author_definition',
-         'before_edit_definiton',
+         'before_edit_definition',
          'out',
          '',
          '',
@@ -275,11 +275,11 @@ drop function inline_0 ();
 
 	select workflow__add_arc (
          'full_term_publish_process_wf',
-         'edit_definiton',
+         'edit_definition',
          'before_add_illustration',
          'out',
          'wf_callback__guard_attribute_true',
-         'edit_definiton_is_definition_correct_p',
+         'edit_definition_is_definition_correct_p',
          'Is definition correct'
 	);
 
@@ -287,8 +287,8 @@ drop function inline_0 ();
 
 	select workflow__add_arc (
          'full_term_publish_process_wf',
-         'edit_definiton',
-         'before_edit_definiton',
+         'edit_definition',
+         'before_edit_definition',
          'in',
          '',
          '',
@@ -299,7 +299,7 @@ drop function inline_0 ();
 
 	select workflow__add_arc (
          'full_term_publish_process_wf',
-         'edit_definiton',
+         'edit_definition',
          'start',
          'out',
          '#',
@@ -343,7 +343,7 @@ drop function inline_0 ();
 
     select workflow__create_attribute(
         'full_term_publish_process_wf',
-        'edit_definiton_is_definition_correct_p',
+        'edit_definition_is_definition_correct_p',
         'boolean',
         'Is definition correct',
 	null,
@@ -360,8 +360,8 @@ drop function inline_0 ();
 
 	select workflow__add_trans_attribute_map(
         	'full_term_publish_process_wf', 
-        	'edit_definiton',
-        	'edit_definiton_is_definition_correct_p',
+        	'edit_definition',
+        	'edit_definition_is_definition_correct_p',
         	1
     );
 
@@ -374,7 +374,7 @@ drop function inline_0 ();
 
     select workflow__add_trans_role_assign_map(
         'full_term_publish_process_wf',
-        'edit_definiton',
+        'edit_definition',
         'add_illustration'
     );
 
@@ -538,7 +538,7 @@ insert into wf_context_transition_info
 values
 ('default',
  'full_term_publish_process_wf',
- 'edit_definiton',
+ 'edit_definition',
  20,
  '',
  '',

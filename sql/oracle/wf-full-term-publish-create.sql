@@ -55,8 +55,8 @@ show errors
 begin
     workflow.add_place(
         workflow_key => 'full_term_publish_process_wf',
-        place_key    => 'before_edit_definiton', 
-        place_name   => 'Ready to Edit Definiton', 
+        place_key    => 'before_edit_definition', 
+        place_name   => 'Ready to Edit Definition', 
         sort_order   => 2
     );
 end;
@@ -137,8 +137,8 @@ show errors
 begin
     workflow.add_role(
         workflow_key => 'full_term_publish_process_wf',
-        role_key     => 'edit_definiton',
-        role_name    => 'Edit Definiton',
+        role_key     => 'edit_definition',
+        role_name    => 'Edit Definition',
         sort_order   => 2
     );
 end;
@@ -167,9 +167,9 @@ show errors
 begin
     workflow.add_transition(
         workflow_key    => 'full_term_publish_process_wf',
-        transition_key  => 'edit_definiton',
-        transition_name => 'Edit Definiton',
-        role_key        => 'edit_definiton',
+        transition_key  => 'edit_definition',
+        transition_name => 'Edit Definition',
+        role_key        => 'edit_definition',
         sort_order      => 2,
         trigger_type    => 'user'
     );
@@ -255,7 +255,7 @@ begin
     workflow.add_arc(
         workflow_key          => 'full_term_publish_process_wf',
         transition_key        => 'approve_new_term',
-        place_key             => 'before_edit_definiton',
+        place_key             => 'before_edit_definition',
         direction             => 'out',
         guard_callback        => '#',
         guard_custom_arg      => '',
@@ -283,7 +283,7 @@ begin
     workflow.add_arc(
         workflow_key          => 'full_term_publish_process_wf',
         transition_key        => 'author_definition',
-        place_key             => 'before_edit_definiton',
+        place_key             => 'before_edit_definition',
         direction             => 'out',
         guard_callback        => '',
         guard_custom_arg      => '',
@@ -310,11 +310,11 @@ show errors
 begin
     workflow.add_arc(
         workflow_key          => 'full_term_publish_process_wf',
-        transition_key        => 'edit_definiton',
+        transition_key        => 'edit_definition',
         place_key             => 'before_add_illustration',
         direction             => 'out',
         guard_callback        => 'wf_callback.guard_attribute_true',
-        guard_custom_arg      => 'edit_definiton_is_definition_correct_p',
+        guard_custom_arg      => 'edit_definition_is_definition_correct_p',
         guard_description     => 'Is definition correct'
     );
 end;
@@ -324,7 +324,7 @@ show errors
 begin
     workflow.add_arc(
         workflow_key          => 'full_term_publish_process_wf',
-        transition_key        => 'edit_definiton',
+        transition_key        => 'edit_definition',
         place_key             => 'start',
         direction             => 'out',
         guard_callback        => '#',
@@ -338,8 +338,8 @@ show errors
 begin
     workflow.add_arc(
         workflow_key          => 'full_term_publish_process_wf',
-        transition_key        => 'edit_definiton',
-        place_key             => 'before_edit_definiton',
+        transition_key        => 'edit_definition',
+        place_key             => 'before_edit_definition',
         direction             => 'in',
         guard_callback        => '',
         guard_custom_arg      => '',
@@ -360,7 +360,7 @@ declare
 begin
     v_attribute_id := workflow.create_attribute(
         workflow_key => 'full_term_publish_process_wf',
-        attribute_name => 'edit_definiton_is_definition_correct_p',
+        attribute_name => 'edit_definition_is_definition_correct_p',
         datatype => 'boolean',
         pretty_name => 'Is definition correct',
         default_value => 't'
@@ -372,8 +372,8 @@ show errors
 begin
     workflow.add_trans_attribute_map(
         workflow_key   => 'full_term_publish_process_wf', 
-        transition_key => 'edit_definiton',
-        attribute_name => 'edit_definiton_is_definition_correct_p',
+        transition_key => 'edit_definition',
+        attribute_name => 'edit_definition_is_definition_correct_p',
         sort_order     => 1
     );
 end;
@@ -413,7 +413,7 @@ show errors
 begin
     workflow.add_trans_role_assign_map(
         workflow_key    => 'full_term_publish_process_wf',
-        transition_key  => 'edit_definiton',
+        transition_key  => 'edit_definition',
         assign_role_key => 'add_illustration'
     );
 end;
@@ -579,7 +579,7 @@ insert into wf_context_transition_info
 values
 ('default',
  'full_term_publish_process_wf',
- 'edit_definiton',
+ 'edit_definition',
  20,
  '',
  '',
