@@ -26,7 +26,7 @@ such as creation_user, creation_date, last_modified, etc.
 these act as primary containers for terms (glossary content_item),
 a term''s context_id will point to its glossary and terms will also be mapped using cr_child_rels table';
 
-comment on column glossaries.owner_id is 'the creation_user may not always be the owner of a module after is created, so we have a seperate column that references the parties table so that we owner''s can be either individual''s or groups';
+comment on column glossaries.owner_id is 'the creation_user may not always be the owner of a module after is created, so we have a separate column that references the parties table so that we owner''s can be either individual''s or groups';
 
 comment on column glossaries.package_id is 'we use this rather than always counting on context_id to give us the right permissions, because package instances  may share grant the same permission to the same party, but they are not the same set of glossaries ';
 
