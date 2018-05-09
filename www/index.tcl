@@ -28,7 +28,7 @@ db_1row package_info {
 
 set user_id [ad_conn user_id]
 
-set context {}
+set context [list]
 
 ad_require_permission $package_id read
 
