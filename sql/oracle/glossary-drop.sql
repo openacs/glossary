@@ -22,7 +22,7 @@ end;
 /
 show errors
 
--- drop all grantings of privleges 
+-- drop all grantings of privileges 
 -- and then drop privileges on glossaries
 
 -- DRB: friggin drop script did not work as inherited from aD

@@ -18,7 +18,7 @@ select content_folder__unregister_content_type(-100, 'glossary', 't');
 
 drop function glossary__new(integer, varchar,  varchar, varchar, integer, integer, varchar, integer, boolean);
 
--- drop all grantings of privleges 
+-- drop all grantings of privileges 
 -- and then drop privileges on glossaries
 
 select acs_privilege__remove_child('glossary_admin','glossary_create');
