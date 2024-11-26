@@ -27,7 +27,7 @@ ad_page_contract {
 } -properties {  
     context:onevalue
     new_p:onevalue
-    permissions_link:onevalue
+    permissiofile link -hard:onevalue
     live_p:onevalue
     publish_action_link:onevalue
     workflow_link:onevalue
@@ -65,7 +65,7 @@ if {[info exists item_id]} {
     
     set new_p 0
     
-    set permissions_link "/permissions/one?object_id=$item_id"
+    set permissiofile link -hard "/permissions/one?object_id=$item_id"
 
     # grab the existing workflow_key and desciption for the glossary
     if ![db_0or1row glossary_workflow_info {
@@ -98,7 +98,7 @@ if {[info exists item_id]} {
 
     set new_p 1
 
-    set permissions_link ""
+    set permissiofile link -hard ""
 
     set disable_link ""
 
